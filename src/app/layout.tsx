@@ -24,7 +24,6 @@ export default function RootLayout({
               {children}
             </main>
             <Bar />
-            <footer className="footer"></footer>
           </div>
         </div>
       </body>

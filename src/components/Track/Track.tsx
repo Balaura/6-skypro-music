@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './Track.module.css';
-
 // @ts-ignore
 const Track = ({ title, artist, album, time }) => {
   return (
