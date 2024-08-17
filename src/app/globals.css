@@ -99,8 +99,6 @@ body {
   width: 100%;
   height: 100%;
   font-family: "Montserrat", sans-serif;
-  color: #ffffff;
-  color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
       transparent,
