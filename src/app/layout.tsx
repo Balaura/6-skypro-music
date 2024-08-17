@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Navigation from '@/components/Navigation/Navigation';
 import Bar from '@/components/Bar/Bar';
 import "./globals.css";
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
 
 export const metadata: Metadata = {
   title: 'Skypro Music',
