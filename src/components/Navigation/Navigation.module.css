@@ -2,12 +2,16 @@
   width: 244px;
   background-color: #181818;
   padding: 20px 0 20px 36px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
 }
 
 .logo {
   width: 113.33px;
   height: 43px;
-  padding: 13px 0 13px 0;
+  padding: 13px 0;
   background-color: transparent;
   margin-bottom: 20px;
 }
