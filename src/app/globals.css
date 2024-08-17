@@ -201,3 +201,19 @@ body {
   font-weight: 700;
   font-family: var(--font-mono);
 }
+
+@media (max-width: 1200px) {
+  .main {
+    flex-direction: column;
+  }
+
+  .centerblock {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 20px;
+  }
+}
