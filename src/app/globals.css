@@ -208,6 +208,7 @@ body {
 
   .centerblock {
     width: 100%;
+    padding: 20px;
     order: 2;
   }
 
@@ -215,24 +216,29 @@ body {
     width: 100%;
     order: 1;
     margin-bottom: 20px;
+    position: static;
+    padding: 20px;
   }
-}
-
-@media (max-width: 1200px) {
   .wrapper {
     padding-left: 0;
   }
 
-  .sidebar {
+  .main__nav {
     position: static;
     width: 100%;
     padding: 20px;
   }
 
-  .centerblock {
+  .main__centerblock {
     width: 100%;
     padding: 20px;
   }
+
+  .main__sidebar {
+    width: 100%;
+    padding: 20px;
+  }
+
 }
 
 @media (max-width: 768px) {
@@ -249,3 +255,4 @@ body {
     margin-bottom: 10px;
   }
 }
+
