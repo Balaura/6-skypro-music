@@ -75,17 +75,31 @@
 
 * {
   box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  font-family: "Montserrat", sans-serif;
+  color: #ffffff;
 }
 
 body {
+  width: 100%;
+  height: 100%;
+  font-family: "Montserrat", sans-serif;
+  color: #ffffff;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -95,9 +109,65 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-a {
+.wrapper {
+  width: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  background-color: #383838;
+}
+
+.container {
+  max-width: 1920px;
+  height: 100vh;
+  margin: 0 auto;
+  position: relative;
+  background-color: #181818;
+}
+
+a,
+a:visited {
   color: inherit;
   text-decoration: none;
+  font-family: "Montserrat", sans-serif;
+  cursor: pointer;
+}
+button,
+._btn {
+  cursor: pointer;
+}
+._btn-text:hover {
+  border-color: #d9b6ff;
+  color: #d9b6ff;
+  cursor: pointer;
+}
+
+._btn-icon:hover svg {
+  fill: transparent;
+  stroke: #acacac;
+  cursor: pointer;
+}
+
+._btn-text:active {
+  border-color: #ad61ff;
+  color: #ad61ff;
+  cursor: pointer;
+}
+
+._btn-icon:active svg {
+  fill: transparent;
+  stroke: #ffffff;
+  cursor: pointer;
+}
+
+._btn-icon:active .track-play__like-svg,
+._btn-icon:active .track-play__dislike-svg {
+  fill: #696969;
+  stroke: #ffffff;
+  cursor: pointer;
+}
+
+ul li {
+  list-style: none;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -105,3 +175,4 @@ a {
     color-scheme: dark;
   }
 }
+

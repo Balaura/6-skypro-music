@@ -1,0 +1,76 @@
+.player {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  padding: 0 27px 0 31px;
+}
+
+.btnPrev,
+.btnPlay,
+.btnNext,
+.btnRepeat,
+.btnShuffle {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.btnPrev {
+  margin-right: 23px;
+}
+
+.btnPrevSvg {
+  width: 15px;
+  height: 14px;
+}
+
+.btnPlay {
+  margin-right: 23px;
+}
+
+.btnPlaySvg {
+  width: 22px;
+  height: 20px;
+  fill: #d9d9d9;
+}
+
+.btnNext {
+  margin-right: 28px;
+  fill: #a53939;
+}
+
+.btnNextSvg {
+  width: 15px;
+  height: 14px;
+  fill: inherit;
+  stroke: #d9d9d9;
+}
+
+.btnRepeat {
+  margin-right: 24px;
+}
+
+.btnRepeatSvg {
+  width: 18px;
+  height: 12px;
+  fill: transparent;
+  stroke: #696969;
+}
+
+.btnShuffle {
+  display: flex;
+  align-items: center;
+}
+
+.btnShuffleSvg {
+  width: 19px;
+  height: 12px;
+  fill: transparent;
+  stroke: #696969;
+}
