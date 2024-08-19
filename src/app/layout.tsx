@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import Navigation from '@/components/Navigation/Navigation';
 import Bar from '@/components/Bar/Bar';
 import "./globals.css";
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
 
 export const metadata: Metadata = {
   title: 'Skypro Music',
@@ -17,7 +16,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body suppressHydrationWarning={true}>
         <div className="wrapper">
           <div className="container">
             <main className="main">
