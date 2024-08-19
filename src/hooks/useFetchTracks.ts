@@ -6,7 +6,8 @@ export interface Track {
   artist: string;
   album: string;
   genre: string;
-  duration: number; //в секундах
+  duration: number; // в секундах
+  release_date: string;
 }
 
 const useFetchTracks = () => {
@@ -19,7 +20,13 @@ const useFetchTracks = () => {
       try {
         const response = await fetch('https://webdev-music-003b5b991590.herokuapp.com/catalog/track/all/');
         if (!response.ok) {
-          throw new Error('Не удалось загрузить треки');
+          if (response.status === 404) {
+            throw new Error('Треки не найдены');
+          } else if (response.status >= 500) {
+            throw new Error('Ошибка сервера. Пожалуйста, попробуйте позже');
+          } else {
+            throw new Error('Не удалось загрузить треки');
+          }
         }
         const data = await response.json();
         if (Array.isArray(data.data)) {
@@ -29,14 +36,23 @@ const useFetchTracks = () => {
             artist: track.author || '',
             album: track.album || '',
             genre: track.genre || '',
-            duration: track.duration_in_seconds || '',
+            duration: track.duration_in_seconds || 0,
+            release_date: track.release_date || '',
           })));
         } else {
           throw new Error('Неверный формат данных');
         }
         setError(null);
       } catch (err) {
-        setError('Произошла ошибка при загрузке треков');
+        if (err instanceof Error) {
+          if (err.message === 'Failed to fetch') {
+            setError('Проблема с сетевым подключением. Пожалуйста, проверьте ваше интернет-соединение');
+          } else {
+            setError(err.message);
+          }
+        } else {
+          setError('Произошла неизвестная ошибка');
+        }
         console.error('Ошибка при загрузке треков:', err);
       } finally {
         setLoading(false);
