@@ -6,7 +6,7 @@ export interface Track {
   artist: string;
   album: string;
   genre: string;
-  release_date: string;
+  duration: number; //в секундах
 }
 
 const useFetchTracks = () => {
@@ -22,14 +22,14 @@ const useFetchTracks = () => {
           throw new Error('Не удалось загрузить треки');
         }
         const data = await response.json();
-        if (Array.isArray(data)) {
-          setTracks(data.map((track: any) => ({
-            id: track.id || 0,
-            title: track.title || '',
-            artist: track.artist || '',
+        if (Array.isArray(data.data)) {
+          setTracks(data.data.map((track: any) => ({
+            id: track._id || 0,
+            title: track.name || '',
+            artist: track.author || '',
             album: track.album || '',
             genre: track.genre || '',
-            release_date: track.release_date || '',
+            duration: track.duration_in_seconds || '',
           })));
         } else {
           throw new Error('Неверный формат данных');

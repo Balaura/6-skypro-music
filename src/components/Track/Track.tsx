@@ -2,8 +2,11 @@ import React from 'react';
 import styles from './Track.module.css';
 import { Track as TrackType } from '@/hooks/useFetchTracks';
 
-const Track: React.FC<TrackType> = ({ title, artist, album, release_date }) => {
-  const releaseYear = release_date ? new Date(release_date).getFullYear() : 'N/A';
+const Track: React.FC<TrackType> = ({ title, artist, album, duration }) => {
+  // const releaseYear = release_date ? new Date(release_date).getFullYear() : 'N/A'; // INFO Это вывод только года
+  const minutes = Math.floor(duration / 60);
+  const seconds = duration % 60;
+  const formatDuration = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
   return (
     <div className={styles.item}>
@@ -34,7 +37,7 @@ const Track: React.FC<TrackType> = ({ title, artist, album, release_date }) => {
           <svg className={styles.timeSvg}>
             <use xlinkHref="img/icon/sprite.svg#icon-like"></use>
           </svg>
-          <span className={styles.timeText}>{releaseYear}</span>
+          <span className={styles.timeText}>{formatDuration}</span>
         </div>
       </div>
     </div>
