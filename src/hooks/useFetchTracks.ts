@@ -24,6 +24,7 @@ const useFetchTracks = () => {
     const fetchTracks = async () => {
       try {
         const response = await fetch('https://webdev-music-003b5b991590.herokuapp.com/catalog/track/all/');
+        console.log(">>>>>>>>>>>>>>>>>Загрузка треков");
         if (!response.ok) {
           throw new Error('Не удалось загрузить треки');
         }

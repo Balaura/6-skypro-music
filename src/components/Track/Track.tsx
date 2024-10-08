@@ -9,11 +9,11 @@ interface TrackProps extends TrackType {
   onPlay: () => void; 
 }
 
-const Track: React.FC<TrackProps> = ({ id, name, author, album, duration_in_seconds, isPlaying, onPlay }) => {
+const Track: React.FC<TrackProps> = ({ id, name, author, album, duration_in_seconds, isPlaying, onPlay, track_file }) => {
   const minutes = Math.floor(duration_in_seconds / 60);
   const seconds = duration_in_seconds % 60;
   const formatDuration = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-
+    console.log('Track file URL:', track_file);
   return (
     <div className={styles.item}>
       <div className={styles.track}>
