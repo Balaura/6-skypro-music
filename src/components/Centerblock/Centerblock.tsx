@@ -6,10 +6,20 @@ import Filter from '@/components/Filter/Filter';
 import styles from './Centerblock.module.css';
 import useFetchTracks from '@/hooks/useFetchTracks';
 import Playlist from '@/components/Playlist/Playlist';
+import { Track } from '@/hooks/useFetchTracks';
+import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 
-const Centerblock: React.FC = () => {
-  const { tracks, error, loading } = useFetchTracks();
-  console.log('Tracks:', tracks);
+interface CenterblockProps {
+  tracks: Track[];
+  error: string | null;
+  loading: boolean;
+  audioPlayerState: ReturnType<typeof useAudioPlayer>;
+}
+
+const Centerblock: React.FC<CenterblockProps> = ({ tracks, error, loading, audioPlayerState }) => {
+
+  // console.log('Tracks:', tracks);
+
   return (
     <div className={styles.centerblock}>
       <Search />
@@ -20,7 +30,7 @@ const Centerblock: React.FC = () => {
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <Playlist tracks={tracks} />
+        <Playlist tracks={tracks} audioPlayerState={audioPlayerState} />
       )}
     </div>
   );

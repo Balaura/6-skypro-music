@@ -8,15 +8,16 @@ import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 
 interface PlaylistProps {
   tracks: TrackType[];
+  audioPlayerState: ReturnType<typeof useAudioPlayer>;
 }
 
-const Playlist: React.FC<PlaylistProps> = ({ tracks }) => {
+const Playlist: React.FC<PlaylistProps> = ({ tracks, audioPlayerState }) => {
 
-  const { isPlaying, currentTrack, handlePlay } = useAudioPlayer();
+  const { isPlaying, currentTrack, handlePlay } = audioPlayerState;
 
   console.log('Rendering Playlist with tracks:', tracks);
 
-  const uniqueIds = new Set(tracks.map(track => track.id));
+  const uniqueIds = new Set(tracks.map(track => track._id));
 
   if (uniqueIds.size !== tracks.length) {
     console.error('WARNING: Duplicate track ids detected!');
@@ -26,11 +27,11 @@ const Playlist: React.FC<PlaylistProps> = ({ tracks }) => {
     <div className={styles.playlist}>
       {tracks && tracks.length > 0 ? (
         tracks.map((track) => (
-          console.log('Rendering track:', track),
-          <Track 
-            key={track.id} 
-            {...track} 
-            isPlaying={isPlaying && currentTrack?.id === track.id}
+          // console.log('Rendering track:', track),
+          <Track
+            key={track._id}
+            {...track}
+            isPlaying={isPlaying && currentTrack?._id === track._id}
             onPlay={() => handlePlay(track)}
           />
         ))

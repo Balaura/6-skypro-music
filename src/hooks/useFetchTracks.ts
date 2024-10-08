@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 export interface Track {
-  id: number;
+  _id: number;
   name: string;
   author: string;
   release_date: string;

@@ -29,7 +29,7 @@ export default function RootLayout({
               <Navigation />
               {children}
             </main>
-            <Bar />
+            {/* <Bar /> */}
           </div>
         </div>
       </body>

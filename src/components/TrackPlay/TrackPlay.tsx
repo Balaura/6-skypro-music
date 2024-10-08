@@ -1,7 +1,12 @@
 import React from 'react';
 import styles from './TrackPlay.module.css';
+import { Track } from '@/hooks/useFetchTracks';
 
-const TrackPlay = () => {
+interface TrackPlayProps {
+  currentTrack: Track | null;
+}
+
+const TrackPlay: React.FC<TrackPlayProps> = ({ currentTrack }) => {
   return (
     <div className={styles.trackPlay}>
       <div className={styles.contain}>
@@ -12,12 +17,12 @@ const TrackPlay = () => {
         </div>
         <div className={styles.author}>
           <a className={styles.authorLink} href="#">
-            Ты та...
+            {currentTrack?.name}
           </a>
         </div>
         <div className={styles.album}>
           <a className={styles.albumLink} href="#">
-            Баста
+            {currentTrack?.author}
           </a>
         </div>
       </div>

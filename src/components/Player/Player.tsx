@@ -4,8 +4,13 @@ import React from 'react';
 import styles from './Player.module.css';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 
-const Player: React.FC = () => {
-  const { isPlaying, togglePlayPause } = useAudioPlayer();
+interface PlayerProps {
+  audioPlayerState: ReturnType<typeof useAudioPlayer>;
+}
+
+const Player: React.FC<PlayerProps> = ({ audioPlayerState }) => {
+
+  const { isPlaying, isLooping, togglePlayPause, toggleLooping } = audioPlayerState;
 
   return (
     <div className={styles.player}>
@@ -25,7 +30,7 @@ const Player: React.FC = () => {
             <use xlinkHref="img/icon/sprite.svg#icon-next"></use>
           </svg>
         </div>
-        <div className={`${styles.btnRepeat} ${styles._btnIcon}`}>
+        <div className={`${styles.btnRepeat} ${styles._btnIcon} ${isLooping ? styles.active : ''}`} onClick={toggleLooping}>
           <svg className={styles.btnRepeatSvg}>
             <use xlinkHref="img/icon/sprite.svg#icon-repeat"></use>
           </svg>

@@ -5,34 +5,33 @@ import styles from './Track.module.css';
 import { Track as TrackType } from '@/hooks/useFetchTracks';
 
 interface TrackProps extends TrackType {
-  isPlaying: boolean; 
-  onPlay: () => void; 
+  isPlaying: boolean;
+  onPlay: () => void;
 }
 
-const Track: React.FC<TrackProps> = ({ id, name, author, album, duration_in_seconds, isPlaying, onPlay, track_file }) => {
+const Track: React.FC<TrackProps> = ({ _id, name, author, album, duration_in_seconds, isPlaying, onPlay, track_file }) => {
   const minutes = Math.floor(duration_in_seconds / 60);
   const seconds = duration_in_seconds % 60;
   const formatDuration = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    console.log('Track file URL:', track_file);
   return (
     <div className={styles.item}>
       <div className={styles.track}>
         <div className={styles.title}>
-          <div className={styles.titleImage} onClick={onPlay}> 
+          <div className={styles.titleImage} onClick={onPlay}>
             <svg className={styles.titleSvg}>
               <use xlinkHref={`img/icon/sprite.svg#icon-${isPlaying ? 'pause' : 'note'}`}></use>
             </svg>
           </div>
           <div className={styles.titleText}>
-          <a className={styles.titleLink} onClick={(e) => { e.preventDefault(); onPlay(); }}> 
-              {name || 'Неизвестный трек'} 
+            <a className={styles.titleLink} onClick={(e) => { e.preventDefault(); onPlay(); }}>
+              {name || 'Неизвестный трек'}
               <span className={styles.titleSpan}></span>
             </a>
           </div>
         </div>
         <div className={styles.author}>
           <a className={styles.authorLink} href="#">
-            {author || 'Неизвестный исполнитель'} 
+            {author || 'Неизвестный исполнитель'}
           </a>
         </div>
         <div className={styles.album}>
