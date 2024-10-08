@@ -3,13 +3,13 @@
 import React from 'react';
 import Search from '@/components/Search/Search';
 import Filter from '@/components/Filter/Filter';
-import Content from '@/components/Content/Content';
 import styles from './Centerblock.module.css';
 import useFetchTracks from '@/hooks/useFetchTracks';
+import Playlist from '@/components/Playlist/Playlist';
 
-const Centerblock = () => {
+const Centerblock: React.FC = () => {
   const { tracks, error, loading } = useFetchTracks();
-
+  console.log('Tracks:', tracks);
   return (
     <div className={styles.centerblock}>
       <Search />
@@ -20,7 +20,7 @@ const Centerblock = () => {
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <Content tracks={tracks} />
+        <Playlist tracks={tracks} />
       )}
     </div>
   );

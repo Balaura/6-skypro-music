@@ -1,7 +1,12 @@
+"use client";
+
 import React from 'react';
 import styles from './Player.module.css';
+import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 
-const Player = () => {
+const Player: React.FC = () => {
+  const { isPlaying, togglePlayPause } = useAudioPlayer();
+
   return (
     <div className={styles.player}>
       <div className={styles.controls}>
@@ -10,9 +15,9 @@ const Player = () => {
             <use xlinkHref="img/icon/sprite.svg#icon-prev"></use>
           </svg>
         </div>
-        <div className={`${styles.btnPlay} ${styles._btn}`}>
+        <div className={`${styles.btnPlay} ${styles._btn}`} onClick={togglePlayPause}>
           <svg className={styles.btnPlaySvg}>
-            <use xlinkHref="img/icon/sprite.svg#icon-play"></use>
+            <use xlinkHref={`img/icon/sprite.svg#icon-${isPlaying ? 'pause' : 'play'}`}></use>
           </svg>
         </div>
         <div className={styles.btnNext}>

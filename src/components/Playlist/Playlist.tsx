@@ -25,27 +25,33 @@
 
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Track from '@/components/Track/Track';
 import styles from './Playlist.module.css';
 import { Track as TrackType } from '@/hooks/useFetchTracks';
+import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 
 interface PlaylistProps {
   tracks: TrackType[];
 }
 
 const Playlist: React.FC<PlaylistProps> = ({ tracks }) => {
-  const [displayedTracks, setDisplayedTracks] = useState<TrackType[]>([]);
-
-  useEffect(() => {
-    setDisplayedTracks(tracks);
-  }, [tracks]);
-
+  const { isPlaying, currentTrack, handlePlay } = useAudioPlayer();
+  console.log('Rendering Playlist with tracks:', tracks);
   return (
     <div className={styles.playlist}>
-      {displayedTracks.map((track) => (
-        <Track key={track.id} {...track} />
-      ))}
+      {tracks && tracks.length > 0 ? (
+        tracks.map((track) => (
+          <Track 
+            key={track.id} 
+            {...track} 
+            isPlaying={isPlaying && currentTrack?.id === track.id}
+            onPlay={() => handlePlay(track)}
+          />
+        ))
+      ) : (
+        <p>No tracks available</p>
+      )}
     </div>
   );
 };

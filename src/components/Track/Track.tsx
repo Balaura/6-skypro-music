@@ -1,31 +1,38 @@
+"use client";
+
 import React from 'react';
 import styles from './Track.module.css';
 import { Track as TrackType } from '@/hooks/useFetchTracks';
 
-const Track: React.FC<TrackType> = ({ title, artist, album, duration }) => {
-  // const releaseYear = release_date ? new Date(release_date).getFullYear() : 'N/A'; // INFO Это вывод только года
-  const minutes = Math.floor(duration / 60);
-  const seconds = duration % 60;
+interface TrackProps extends TrackType {
+  isPlaying: boolean; 
+  onPlay: () => void; 
+}
+
+const Track: React.FC<TrackProps> = ({ id, name, author, album, duration_in_seconds, isPlaying, onPlay }) => {
+  const minutes = Math.floor(duration_in_seconds / 60);
+  const seconds = duration_in_seconds % 60;
   const formatDuration = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
   return (
     <div className={styles.item}>
       <div className={styles.track}>
         <div className={styles.title}>
-          <div className={styles.titleImage}>
+          <div className={styles.titleImage} onClick={onPlay}> 
             <svg className={styles.titleSvg}>
-              <use xlinkHref="img/icon/sprite.svg#icon-note"></use>
+              <use xlinkHref={`img/icon/sprite.svg#icon-${isPlaying ? 'pause' : 'note'}`}></use>
             </svg>
           </div>
           <div className={styles.titleText}>
-            <a className={styles.titleLink} href="#">
-              {title || 'Неизвестный трек'} <span className={styles.titleSpan}></span>
+          <a className={styles.titleLink} onClick={(e) => { e.preventDefault(); onPlay(); }}> 
+              {name || 'Неизвестный трек'} 
+              <span className={styles.titleSpan}></span>
             </a>
           </div>
         </div>
         <div className={styles.author}>
           <a className={styles.authorLink} href="#">
-            {artist || 'Неизвестный исполнитель'}
+            {author || 'Неизвестный исполнитель'} 
           </a>
         </div>
         <div className={styles.album}>
