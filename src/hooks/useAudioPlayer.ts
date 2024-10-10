@@ -7,7 +7,11 @@ export const useAudioPlayer = () => {
      const [isPlaying, setIsPlaying] = useState(false);
      const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
      const [isLooping, setIsLooping] = useState(false);
+     const [volume, setVolume] = useState(0.5);
      const audioRef = useRef<HTMLAudioElement | null>(null);
+     const duration = audioRef.current?.duration || 0;
+     const [currentTime, setCurrentTime] = useState(0);
+     const [newCurrentTime, setNewCurrentTime] = useState(0);
 
      const handlePlay = async (track: Track) => {
           try {
@@ -81,5 +85,29 @@ export const useAudioPlayer = () => {
           };
      }, []);
 
-     return { isPlaying, currentTrack, isLooping, handlePlay, togglePlayPause, toggleLooping };
+     // регулировка громкости через ползунок
+     useEffect(() => {
+          if (audioRef.current) {
+               audioRef.current.volume = volume;
+          }
+     }, [volume]);
+
+     // Пермотка трека и длительность проигрывания
+     useEffect(() => {
+          if (audioRef.current) {
+               audioRef.current.ontimeupdate = () => {
+                    setCurrentTime(audioRef.current?.currentTime || 0);
+               };
+          }
+     }, []);
+
+     useEffect(() => {
+          if (audioRef.current) {
+               audioRef.current.currentTime = newCurrentTime;
+          }
+     }, [newCurrentTime]);
+
+
+     return { isPlaying, currentTrack, isLooping, handlePlay, togglePlayPause, toggleLooping, volume, setVolume, audioRef, duration, currentTime, setNewCurrentTime };
 };
+

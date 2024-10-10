@@ -16,9 +16,10 @@ const Filter: React.FC<FilterProps> = ({ tracks }) => {
 
   useEffect(() => {
     if (tracks.length > 0) {
-      const uniqueArtists = [...new Set(tracks.map(track => track.artist))];
-      const uniqueGenres = [...new Set(tracks.map(track => track.genre))];
+      const uniqueArtists = [...new Set(tracks.map(track => track.author))];
+      const uniqueGenres = [...new Set(tracks.flatMap(track => track.genre))];
       const uniqueYears = [...new Set(tracks.map(track => new Date(track.release_date).getFullYear().toString()))];
+
 
       setArtists(uniqueArtists);
       setGenres(uniqueGenres);
@@ -33,7 +34,7 @@ const Filter: React.FC<FilterProps> = ({ tracks }) => {
   return (
     <div className={styles.filter}>
       <div className={styles.title}>Искать по:</div>
-      <div 
+      <div
         className={`${styles.button} ${activeFilter === 'artist' ? styles.active : ''}`}
         onClick={() => toggleFilter('artist')}
       >
@@ -46,7 +47,7 @@ const Filter: React.FC<FilterProps> = ({ tracks }) => {
           ))}
         </div>
       )}
-      <div 
+      <div
         className={`${styles.button} ${activeFilter === 'year' ? styles.active : ''}`}
         onClick={() => toggleFilter('year')}
       >
@@ -59,7 +60,7 @@ const Filter: React.FC<FilterProps> = ({ tracks }) => {
           ))}
         </div>
       )}
-      <div 
+      <div
         className={`${styles.button} ${activeFilter === 'genre' ? styles.active : ''}`}
         onClick={() => toggleFilter('genre')}
       >

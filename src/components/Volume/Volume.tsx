@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Volume.module.css';
+import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 
-const Volume = () => {
+interface PlayerProps {
+  audioPlayerState: ReturnType<typeof useAudioPlayer>;
+}
+
+const Volume: React.FC<PlayerProps> = ({ audioPlayerState }) => {
+
   return (
     <div className={styles.volumeBlock}>
       <div className={styles.content}>
@@ -15,6 +21,11 @@ const Volume = () => {
             className={`${styles.progressLine} ${styles._btn}`}
             type="range"
             name="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={audioPlayerState.volume}
+            onChange={(e) => audioPlayerState.setVolume(Number(e.target.value))}
           />
         </div>
       </div>

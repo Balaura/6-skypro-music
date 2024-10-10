@@ -4,7 +4,6 @@ import React from 'react';
 import Search from '@/components/Search/Search';
 import Filter from '@/components/Filter/Filter';
 import styles from './Centerblock.module.css';
-import useFetchTracks from '@/hooks/useFetchTracks';
 import Playlist from '@/components/Playlist/Playlist';
 import { Track } from '@/hooks/useFetchTracks';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
@@ -17,8 +16,6 @@ interface CenterblockProps {
 }
 
 const Centerblock: React.FC<CenterblockProps> = ({ tracks, error, loading, audioPlayerState }) => {
-
-  // console.log('Tracks:', tracks);
 
   return (
     <div className={styles.centerblock}>

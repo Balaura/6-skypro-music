@@ -13,10 +13,17 @@
 
 .playerBlock {
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
   justify-content: space-between;
   align-items: center;
   padding: 12px 20px;
+}
+
+.barPlayer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 @media (max-width: 768px) {
