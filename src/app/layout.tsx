@@ -1,8 +1,7 @@
 import React from 'react';
 import type { Metadata } from "next";
 import Navigation from '@/components/Navigation/Navigation';
-import "./globals_old.css";
-// import "./globals.css";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: 'Skypro Music',
