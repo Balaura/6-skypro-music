@@ -15,11 +15,6 @@ export const useAudioPlayer = () => {
 
      const handlePlay = async (track: Track) => {
           try {
-               console.log('Playing track:', track);
-               console.log('Current track ID:', track._id);
-               console.log('Current track:', currentTrack);
-               console.log('Audio ref:', audioRef.current);
-               console.log('Is playing', currentTrack?._id !== track._id);
 
                if (currentTrack?._id !== track._id) {
                     console.log('Loading new track...');
@@ -44,10 +39,6 @@ export const useAudioPlayer = () => {
 
      const togglePlayPause = async () => {
           try {
-               console.log('<xxx> Toggling play/pause...');
-               console.log('Current track:', currentTrack);
-               console.log('Audio ref:', audioRef.current);
-               console.log('Is playing', currentTrack?._id);
                if (audioRef.current) {
                     if (isPlaying) {
                          await audioRef.current.pause();
@@ -92,15 +83,18 @@ export const useAudioPlayer = () => {
           }
      }, [volume]);
 
-     // Пермотка трека и длительность проигрывания
+     // Длительность проигрывания
      useEffect(() => {
           if (audioRef.current) {
+
                audioRef.current.ontimeupdate = () => {
                     setCurrentTime(audioRef.current?.currentTime || 0);
+
                };
           }
      }, []);
 
+     // Перемотка трека
      useEffect(() => {
           if (audioRef.current) {
                audioRef.current.currentTime = newCurrentTime;

@@ -9,7 +9,7 @@ interface TrackProps extends TrackType {
   onPlay: () => void;
 }
 
-const Track: React.FC<TrackProps> = ({ _id, name, author, album, duration_in_seconds, isPlaying, onPlay, track_file }) => {
+const Track: React.FC<TrackProps> = ({ name, author, album, duration_in_seconds, isPlaying, onPlay }) => {
   const minutes = Math.floor(duration_in_seconds / 60);
   const seconds = duration_in_seconds % 60;
   const formatDuration = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;

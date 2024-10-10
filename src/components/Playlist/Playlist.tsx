@@ -15,7 +15,7 @@ const Playlist: React.FC<PlaylistProps> = ({ tracks, audioPlayerState }) => {
 
   const { isPlaying, currentTrack, handlePlay } = audioPlayerState;
 
-  console.log('Rendering Playlist with tracks:', tracks);
+  // console.log('Rendering Playlist with tracks:', tracks);
 
   const uniqueIds = new Set(tracks.map(track => track._id));
 
@@ -27,7 +27,6 @@ const Playlist: React.FC<PlaylistProps> = ({ tracks, audioPlayerState }) => {
     <div className={styles.playlist}>
       {tracks && tracks.length > 0 ? (
         tracks.map((track) => (
-          // console.log('Rendering track:', track),
           <Track
             key={track._id}
             {...track}
