@@ -31,7 +31,7 @@ const Playlist: React.FC<PlaylistProps> = ({ tracks, audioPlayerState }) => {
             key={track._id}
             {...track}
             isPlaying={isPlaying && currentTrack?._id === track._id}
-            onPlay={() => handlePlay(track)}
+            onPlay={() => handlePlay(track, tracks)}
           />
         ))
       ) : (

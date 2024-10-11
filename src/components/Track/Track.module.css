@@ -109,6 +109,7 @@
       margin-bottom: 5px;
     }
   }
+  
   .playing_dot {
     width: 10px;
     height: 10px;
@@ -119,7 +120,12 @@
   }
 
   .not_playing_dot {
-    display: none;
+    width: 10px;
+    height: 10px;
+    background-color: #b672ff;
+    border-radius: 8px;
+    display: block;
+    animation: none;
   }
   
   @keyframes bubble_out {

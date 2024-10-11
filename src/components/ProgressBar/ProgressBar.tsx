@@ -31,7 +31,7 @@ export const ProgressBar: React.FC<PlayerProps> = ({ audioPlayerState }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTime = Number(e.target.value);
     audioPlayerState.setNewCurrentTime(newTime);
-    updateProgress();
+    // updateProgress();
   };
 
   return (
@@ -44,9 +44,9 @@ export const ProgressBar: React.FC<PlayerProps> = ({ audioPlayerState }) => {
         className={styles.progressBarInput}
         type="range"
         min="0"
-        max={audioPlayerState.duration || 100}
+        max={audioPlayerState.duration}
         value={audioPlayerState.audioRef.current?.currentTime || 0}
-        step={0.01}
+        step={0.0001}
         onChange={handleChange}
       />
     </div>

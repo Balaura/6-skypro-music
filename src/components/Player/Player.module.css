@@ -26,18 +26,19 @@
 }
 
 
-/* Дополнительные стили для кнопок которые не пока не раюботают */
+
 .btnPrev,
 .btnNext,
 .btnShuffle {
   cursor: pointer;
 }
-/* Дополнительные стили для кнопок которые не пока не раюботают */
+
 .btnPrev:hover,
 .btnNext:hover,
 .btnShuffle:hover {
   opacity: 0.3;
 }
+
 
 .btnPrev {
   margin-right: 23px;
@@ -72,19 +73,25 @@
 
 .btnRepeat {
   margin-right: 24px;
+  cursor: pointer;
 }
 
-.btnRepeatSvg {
+.btnRepeat.active {
+  fill: #ffffff;
+}
+
+.btnRepeat .btnRepeatSvg {
   width: 18px;
   height: 12px;
   fill: transparent;
   stroke: #696969;
-  
+  /* stroke: #ffffff; */
 }
 
 .btnRepeat.active .btnRepeatSvg {
   fill: transparent;
   stroke: #ffffff;
+  /* stroke: #696969; */
 }
 
 .btnShuffle {
@@ -97,4 +104,9 @@
   height: 12px;
   fill: transparent;
   stroke: #696969;
+}
+
+.btnShuffle.active .btnShuffleSvg {
+  fill: transparent;
+  stroke: #ffffff;
 }
