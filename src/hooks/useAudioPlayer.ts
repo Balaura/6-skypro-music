@@ -58,10 +58,6 @@ export const useAudioPlayer = () => {
           if (audioRef.current) {
                audioRef.current.loop = isLooping;
           }
-
-          console.log('Looping:', isLooping);
-          console.log('Audio ref:', audioRef.current);
-          console.log('Is looping', audioRef.current?.loop);
      };
 
      useEffect(() => {
