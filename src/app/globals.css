@@ -149,6 +149,7 @@
    }
    
    button:active, ._btn:active {
+  
      transform: scale(0.95);
    }
    ul li {
@@ -168,11 +169,12 @@
      justify-content: space-between;
      padding: 20px 40px 100px 244px;
      width: 100%;
-     /* flex-direction: column;
-     align-items: center; */
-     /* padding: 6rem; */
-     /* min-height: 100vh; */
-     /* flex: 1 1 auto; */
+     overflow-y: auto;
+     flex-direction: column;
+     align-items: center; 
+     padding: 6rem;
+     min-height: 100vh;
+     flex: 1 1 auto;
    }
    
    .wrapper {
@@ -185,7 +187,6 @@
    
    .container {
      max-width: 1920px;
-     /* height: 100vh; */
      margin: 0 auto;
      position: relative;
      background-color: #181818;

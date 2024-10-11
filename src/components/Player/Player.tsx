@@ -12,10 +12,14 @@ const Player: React.FC<PlayerProps> = ({ audioPlayerState }) => {
 
   const { isPlaying, isLooping, togglePlayPause, toggleLooping } = audioPlayerState;
 
+  const handleNotImplemented = () => {
+    alert('Еще не реализовано');
+  };
+
   return (
     <div className={styles.player}>
       <div className={styles.controls}>
-        <div className={styles.btnPrev}>
+        <div className={styles.btnPrev} onClick={handleNotImplemented}>
           <svg className={styles.btnPrevSvg}>
             <use xlinkHref="img/icon/sprite.svg#icon-prev"></use>
           </svg>
@@ -25,7 +29,7 @@ const Player: React.FC<PlayerProps> = ({ audioPlayerState }) => {
             <use xlinkHref={`img/icon/sprite.svg#icon-${isPlaying ? 'pause' : 'play'}`}></use>
           </svg>
         </div>
-        <div className={styles.btnNext}>
+        <div className={styles.btnNext} onClick={handleNotImplemented}>
           <svg className={styles.btnNextSvg}>
             <use xlinkHref="img/icon/sprite.svg#icon-next"></use>
           </svg>
@@ -35,7 +39,7 @@ const Player: React.FC<PlayerProps> = ({ audioPlayerState }) => {
             <use xlinkHref="img/icon/sprite.svg#icon-repeat"></use>
           </svg>
         </div>
-        <div className={`${styles.btnShuffle} ${styles._btnIcon}`}>
+        <div className={`${styles.btnShuffle} ${styles._btnIcon}`} onClick={handleNotImplemented}>
           <svg className={styles.btnShuffleSvg}>
             <use xlinkHref="img/icon/sprite.svg#icon-shuffle"></use>
           </svg>

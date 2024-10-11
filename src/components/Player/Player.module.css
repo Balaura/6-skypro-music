@@ -16,9 +16,27 @@
 .btnNext,
 .btnRepeat,
 .btnShuffle {
-  padding: 5px;
-  display: flex;
-  align-items: center;
+	padding: 5px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+
+/* Дополнительные стили для кнопок которые не пока не раюботают */
+.btnPrev,
+.btnNext,
+.btnShuffle {
+  cursor: pointer;
+}
+/* Дополнительные стили для кнопок которые не пока не раюботают */
+.btnPrev:hover,
+.btnNext:hover,
+.btnShuffle:hover {
+  opacity: 0.3;
 }
 
 .btnPrev {
@@ -61,6 +79,12 @@
   height: 12px;
   fill: transparent;
   stroke: #696969;
+  
+}
+
+.btnRepeat.active .btnRepeatSvg {
+  fill: transparent;
+  stroke: #ffffff;
 }
 
 .btnShuffle {

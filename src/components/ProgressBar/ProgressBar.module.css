@@ -25,19 +25,19 @@
   left: 0;
   height: 100%;
   background-color: var(--progress-color);
-  width: 0%; /* Начальное значение, будет обновляться через JavaScript */
+  width: 0%; 
 }
 
 .progressBarThumb {
   position: absolute;
   top: 50%;
-  left: 0; /* Начальное значение, будет обновляться через JavaScript */
+  left: 0; 
   width: 0px;
   height: 0px;
   background-color: var(--progress-color);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  transition: width 0.2s, height 0.2s;
+  transition: width 0.2s, height 0.2s, box-shadow 0.2s;
 }
 
 .progressBarInput {
@@ -59,4 +59,9 @@
 .progressBarContainer:hover .progressBarThumb {
   width: 16px;
   height: 16px;
+  box-shadow: 0 0 9px 3px #b672ff; /* Добавляем фиолетовую подсветку при наведении */
+}
+
+.progressBarContainer:active .progressBarThumb {
+  box-shadow: 0 0 15px 5px #b672ff; /* Более яркая подсветка при активном состоянии */
 }

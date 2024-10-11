@@ -31,48 +31,92 @@ const Filter: React.FC<FilterProps> = ({ tracks }) => {
     setActiveFilter(activeFilter === filter ? null : filter);
   };
 
+//   return (
+//     <div className={styles.filter}>
+//       <div className={styles.title}>Искать по:</div>
+//       <div className={styles.filterButtons}>
+//         <div className={styles.filterItem}>
+//           <div
+//             className={`${styles.button} ${activeFilter === 'artist' ? styles.active : ''}`}
+//             onClick={() => toggleFilter('artist')}
+//           >
+//             исполнителю
+//           </div>
+//           {activeFilter === 'artist' && (
+//             <div className={styles.dropdown}>
+//               <div className={styles.dropdownContent}>
+//                 {artists.map((artist, index) => (
+//                   <div key={index} className={styles.dropdownItem}>{artist}</div>
+//                 ))}
+//               </div>
+//             </div>
+//           )}
+//         </div>
+//         <div className={styles.filterItem}>
+//           <div
+//             className={`${styles.button} ${activeFilter === 'year' ? styles.active : ''}`}
+//             onClick={() => toggleFilter('year')}
+//           >
+//             году выпуска
+//           </div>
+//           {activeFilter === 'year' && (
+//             <div className={styles.dropdown}>
+//               <div className={styles.dropdownContent}>
+//                 {years.map((year, index) => (
+//                   <div key={index} className={styles.dropdownItem}>{year}</div>
+//                 ))}
+//               </div>
+//             </div>
+//           )}
+//         </div>
+//         <div className={styles.filterItem}>
+//           <div
+//             className={`${styles.button} ${activeFilter === 'genre' ? styles.active : ''}`}
+//             onClick={() => toggleFilter('genre')}
+//           >
+//             жанру
+//           </div>
+//           {activeFilter === 'genre' && (
+//             <div className={styles.dropdown}>
+//               <div className={styles.dropdownContent}>
+//                 {genres.map((genre, index) => (
+//                   <div key={index} className={styles.dropdownItem}>{genre}</div>
+//                 ))}
+//               </div>
+//             </div>
+//           )}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+//  Сокращённая версия кода выше
   return (
     <div className={styles.filter}>
       <div className={styles.title}>Искать по:</div>
-      <div
-        className={`${styles.button} ${activeFilter === 'artist' ? styles.active : ''}`}
-        onClick={() => toggleFilter('artist')}
-      >
-        исполнителю
+      <div className={styles.filterButtons}>
+        {['artist', 'year', 'genre'].map((filter) => (
+          <div key={filter} className={styles.filterItem}>
+            <button
+              className={`${styles.button} ${activeFilter === filter ? styles.active : ''}`}
+              onClick={() => toggleFilter(filter)}
+            >
+              {filter === 'artist' ? 'исполнителю' : filter === 'year' ? 'году выпуска' : 'жанру'}
+            </button>
+            {activeFilter === filter && (
+              <div className={styles.dropdown}>
+                <div className={styles.dropdownContent}>
+                  {(filter === 'artist' ? artists : filter === 'year' ? years : genres).map((item, index) => (
+                    <div key={index} className={styles.dropdownItem}>
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
-      {activeFilter === 'artist' && (
-        <div className={styles.dropdown}>
-          {artists.map((artist, index) => (
-            <div key={index} className={styles.dropdownItem}>{artist}</div>
-          ))}
-        </div>
-      )}
-      <div
-        className={`${styles.button} ${activeFilter === 'year' ? styles.active : ''}`}
-        onClick={() => toggleFilter('year')}
-      >
-        году выпуска
-      </div>
-      {activeFilter === 'year' && (
-        <div className={styles.dropdown}>
-          {years.map((year, index) => (
-            <div key={index} className={styles.dropdownItem}>{year}</div>
-          ))}
-        </div>
-      )}
-      <div
-        className={`${styles.button} ${activeFilter === 'genre' ? styles.active : ''}`}
-        onClick={() => toggleFilter('genre')}
-      >
-        жанру
-      </div>
-      {activeFilter === 'genre' && (
-        <div className={styles.dropdown}>
-          {genres.map((genre, index) => (
-            <div key={index} className={styles.dropdownItem}>{genre}</div>
-          ))}
-        </div>
-      )}
     </div>
   );
 };

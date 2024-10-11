@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import styles from './Volume.module.css';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 
