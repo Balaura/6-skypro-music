@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { initializePlaylist } from '@/store/features/audioPlayerSlice';
 
 export interface Track {
   artist: any;
@@ -20,6 +22,7 @@ const useFetchTracks = () => {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchTracks = async () => {
@@ -32,10 +35,12 @@ const useFetchTracks = () => {
         const data = await response.json();
 
         if (Array.isArray(data)) {
-          
+
           setTracks(data);
+          dispatch(initializePlaylist(data));
         } else if (data.success && Array.isArray(data.data)) {
           setTracks(data.data);
+          dispatch(initializePlaylist(data.data));
         } else {
           throw new Error('Неверный формат данных');
         }

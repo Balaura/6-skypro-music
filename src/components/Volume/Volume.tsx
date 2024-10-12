@@ -1,11 +1,16 @@
 import styles from './Volume.module.css';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 
-interface PlayerProps {
-  audioPlayerState: ReturnType<typeof useAudioPlayer>;
-}
+const Volume: React.FC = () => {
+  const volume = useSelector((state: RootState) => state.audioPlayer.volume);
+  const { setVolume } = useAudioPlayer();
 
-const Volume: React.FC<PlayerProps> = ({ audioPlayerState }) => {
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+  };
 
   return (
     <div className={styles.volumeBlock}>
@@ -23,8 +28,8 @@ const Volume: React.FC<PlayerProps> = ({ audioPlayerState }) => {
             min="0"
             max="1"
             step="0.01"
-            value={audioPlayerState.volume}
-            onChange={(e) => audioPlayerState.setVolume(Number(e.target.value))}
+            value={volume}
+            onChange={handleVolumeChange}
           />
         </div>
       </div>

@@ -6,21 +6,24 @@ import { Track as TrackType } from '@/hooks/useFetchTracks';
 
 interface TrackProps extends TrackType {
   isPlaying: boolean;
+  isCurrentTrack: boolean;
   onPlay: () => void;
 }
 
-const Track: React.FC<TrackProps> = ({ name, author, album, duration_in_seconds, isPlaying, onPlay }) => {
+const Track: React.FC<TrackProps> = ({ name, author, album, duration_in_seconds, isPlaying, onPlay, isCurrentTrack }) => {
   const minutes = Math.floor(duration_in_seconds / 60);
   const seconds = duration_in_seconds % 60;
   const formatDuration = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-  
+
   return (
     <div className={styles.item}>
       <div className={styles.track}>
         <div className={styles.title}>
-        <div className={styles.titleImage} onClick={onPlay}>
-            {isPlaying ? (
+          <div className={styles.titleImage} onClick={onPlay}>
+            {isCurrentTrack ? isPlaying ? (
               <div className={styles.playing_dot}></div> // Анимация только во время проигрывания
+            ) : (
+              <div className={styles.not_playing_dot}></div> // Анимация только во время проигрывания
             ) : (
               <svg className={styles.titleSvg}>
                 <use xlinkHref="/img/icon/sprite.svg#icon-note" />

@@ -10,16 +10,15 @@ import useFetchTracks from '@/hooks/useFetchTracks';
 
 
 export default function Home() {
-  const audioPlayerState = useAudioPlayer();
   const { tracks, error, loading } = useFetchTracks();
 
   return (
     <>
       <div className={styles.mainContent}>
-        <Centerblock tracks={tracks} error={error} loading={loading} audioPlayerState={audioPlayerState} />
+        <Centerblock tracks={tracks} error={error} loading={loading}  />
         <Sidebar />
       </div>
-      <Bar audioPlayerState={audioPlayerState} />
+      <Bar />
     </>
   );
 }

@@ -12,10 +12,9 @@ interface CenterblockProps {
   tracks: Track[];
   error: string | null;
   loading: boolean;
-  audioPlayerState: ReturnType<typeof useAudioPlayer>;
 }
 
-const Centerblock: React.FC<CenterblockProps> = ({ tracks, error, loading, audioPlayerState }) => {
+const Centerblock: React.FC<CenterblockProps> = ({ tracks, error, loading, }) => {
 
   return (
     <div className={styles.centerblock}>
@@ -27,7 +26,7 @@ const Centerblock: React.FC<CenterblockProps> = ({ tracks, error, loading, audio
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <Playlist tracks={tracks} audioPlayerState={audioPlayerState} />
+        <Playlist />
       )}
     </div>
   );

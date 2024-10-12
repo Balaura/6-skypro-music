@@ -1,52 +1,38 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import styles from "./ProgressBar.module.css";
 
-interface PlayerProps {
-  audioPlayerState: ReturnType<typeof useAudioPlayer>;
-}
 
-export const ProgressBar: React.FC<PlayerProps> = ({ audioPlayerState }) => {
-  const progressRef = useRef<HTMLDivElement>(null);
-  const thumbRef = useRef<HTMLDivElement>(null);
-
-  const updateProgress = useCallback(() => {
-    if (progressRef.current && thumbRef.current && audioPlayerState.audioRef.current) {
-      const progress = (audioPlayerState.audioRef.current.currentTime / audioPlayerState.duration) * 100;
-      progressRef.current.style.width = `${progress}%`;
-      thumbRef.current.style.left = `${progress}%`;
-    }
-  }, [audioPlayerState]);
-
-  useEffect(() => {
-    const audioElement = audioPlayerState.audioRef.current;
-    if (audioElement) {
-      audioElement.addEventListener('timeupdate', updateProgress);
-      return () => {
-        audioElement.removeEventListener('timeupdate', updateProgress);
-      };
-    }
-  }, [audioPlayerState, updateProgress]);
+export const ProgressBar: React.FC = () => {
+  const { currentTime } = useSelector((state: RootState) => state.audioPlayer);
+  const { setCurrentTime, duration } = useAudioPlayer();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTime = Number(e.target.value);
-    audioPlayerState.setNewCurrentTime(newTime);
-    // updateProgress();
+    setCurrentTime(newTime);
   };
 
   return (
     <div className={styles.progressBarContainer}>
       <div className={styles.progressBarTrack}>
-        <div ref={progressRef} className={styles.progressBarFill}></div>
+        <div
+          className={styles.progressBarFill}
+          style={{ width: `${(currentTime / duration) * 100}%` }}
+        ></div>
       </div>
-      <div ref={thumbRef} className={styles.progressBarThumb}></div>
+      <div
+        className={styles.progressBarThumb}
+        style={{ left: `${(currentTime / duration) * 100}%` }}
+      ></div>
       <input
         className={styles.progressBarInput}
         type="range"
         min="0"
-        max={audioPlayerState.duration}
-        value={audioPlayerState.audioRef.current?.currentTime || 0}
-        step={0.0001}
+        max={duration}
+        value={currentTime}
+        step={0.1}
         onChange={handleChange}
       />
     </div>

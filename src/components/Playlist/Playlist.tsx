@@ -3,35 +3,32 @@
 import React from 'react';
 import Track from '@/components/Track/Track';
 import styles from './Playlist.module.css';
-import { Track as TrackType } from '@/hooks/useFetchTracks';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+import PlaylistTitle from '../PlaylistTitle/PlaylistTitle';
 
-interface PlaylistProps {
-  tracks: TrackType[];
-  audioPlayerState: ReturnType<typeof useAudioPlayer>;
-}
+const Playlist: React.FC = () => {
+  const { handlePlay } = useAudioPlayer();
+  const { isPlaying, currentTrack, playlist } = useSelector((state: RootState) => state.audioPlayer);
 
-const Playlist: React.FC<PlaylistProps> = ({ tracks, audioPlayerState }) => {
+  const uniqueIds = new Set(playlist.map(track => track._id));
 
-  const { isPlaying, currentTrack, handlePlay } = audioPlayerState;
-
-  // console.log('Rendering Playlist with tracks:', tracks);
-
-  const uniqueIds = new Set(tracks.map(track => track._id));
-
-  if (uniqueIds.size !== tracks.length) {
+  if (uniqueIds.size !== playlist.length) {
     console.error('WARNING: Duplicate track ids detected!');
   }
 
   return (
     <div className={styles.playlist}>
-      {tracks && tracks.length > 0 ? (
-        tracks.map((track) => (
+      <PlaylistTitle />
+      {playlist && playlist.length > 0 ? (
+        playlist.map((track) => (
           <Track
             key={track._id}
             {...track}
-            isPlaying={isPlaying && currentTrack?._id === track._id}
-            onPlay={() => handlePlay(track, tracks)}
+            isPlaying={isPlaying}
+            isCurrentTrack={currentTrack?._id === track._id}
+            onPlay={() => handlePlay(track, playlist)}
           />
         ))
       ) : (

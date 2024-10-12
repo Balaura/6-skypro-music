@@ -1,15 +1,20 @@
 "use client";
 
-import React from 'react';
+import { useSelector } from 'react-redux';
 import styles from './Player.module.css';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
+import { RootState } from '@/store/store';
 
-interface PlayerProps {
-  audioPlayerState: ReturnType<typeof useAudioPlayer>;
-}
 
-const Player: React.FC<PlayerProps> = ({ audioPlayerState }) => {
-  const { isPlaying, isLooping, togglePlayPause, toggleLooping, playNextTrack, playPreviousTrack, toggleShuffle, isShuffling } = audioPlayerState;
+const Player: React.FC = () => {
+  const { isPlaying, isLooping, isShuffling } = useSelector((state: RootState) => state.audioPlayer);
+  const {
+    togglePlayPause,
+    toggleLooping,
+    playNextTrack,
+    playPreviousTrack,
+    toggleShuffle,
+  } = useAudioPlayer();
 
   return (
     <div className={styles.player}>
