@@ -1,0 +1,93 @@
+.volumeBlock {
+	width: auto;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	padding: 0 92px 0 0;
+   }
+   
+   .content {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+   }
+   
+   .image {
+     width: 13px;
+     height: 18px;
+     margin-right: 17px;
+   }
+   
+   .svg {
+     width: 13px;
+     height: 18px;
+     fill: transparent;
+   }
+   
+   .progress {
+    width: 109px;
+    margin-top: -10px;
+   }
+   
+   .progressLine  {
+    --range: calc(var(--max) - var(--min));
+    --ratio: calc((var(--value) - var(--min)) / var(--range));
+    --sx: calc(0.5 * 12px + var(--ratio) * (100% - 12px));
+  
+    width: 109px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  
+    &::-webkit-slider-runnable-track {
+      height: 2px;
+      background:
+        linear-gradient(#ffffff, #ffffff) 0 / var(--sx) 100% no-repeat,
+        #797979;
+    }
+  
+    &::-webkit-slider-thumb {
+      width: 12px;
+      height: 12px;
+      -webkit-appearance: none;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      background-color: #1a1a1a;
+      cursor: pointer;
+      margin-top: -5px;
+    }
+    &:active::-webkit-slider-thumb {
+      box-shadow: 0 0 9px 3px #b672ff;
+    }
+  
+    &::-moz-range-track {
+      height: 2px;
+      background:
+        linear-gradient(#ffffff, #ffffff) 0 / var(--sx) 100% no-repeat,
+        #797979;
+    }
+  
+    &::-moz-range-thumb {
+      width: max(calc(12px - 2px - 2px), 0px);
+      height: max(calc(12px - 2px - 2px), 0px);
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      background: #1a1a1a;
+    }
+    &:active::-moz-range-thumb {
+      box-shadow: 0 0 15px 5px #b672ff;
+    }
+  }

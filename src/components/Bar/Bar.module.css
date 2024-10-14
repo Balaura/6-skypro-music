@@ -1,0 +1,44 @@
+.bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(28, 28, 28, 0.5);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.playerBlock {
+  display: flex;
+  /* flex-direction: row; */
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+}
+
+.barPlayer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+@media (max-width: 768px) {
+  .playerBlock {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .playerBlock > * {
+    margin: 5px;
+  }
+}
+
+.playerProgress {
+  width: 100%;
+  height: 5px;
+  background: #2e2e2e;
+}

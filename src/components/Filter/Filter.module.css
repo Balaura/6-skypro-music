@@ -1,0 +1,107 @@
+.filter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 51px;
+  position: relative;
+  gap: 10px;
+}
+
+.title {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  margin-right: 15px;
+}
+
+.filterButtons {
+  display: flex;
+  gap: 10px;
+}
+
+.filterItem {
+  position: relative;
+}
+
+.button {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  border: 1px solid #ffffff;
+  border-radius: 60px;
+  padding: 6px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: none;
+  color: #ffffff;
+}
+
+.button:hover {
+  border-color: #d9b6ff;
+  color: #d9b6ff;
+}
+
+.button.active {
+  border-color: #ad61ff;
+  color: #ad61ff;
+}
+
+.dropdown {
+  position: absolute;
+  /* width: 248px; */
+  max-height: 305px;
+  left: 0;
+  top: 100%;
+  background: #313131;
+  border-radius: 10px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.dropdownContent {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 34px;
+  max-height: 237px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #FFFFFF #4B4949;
+}
+/* // полоса прокрутки стили !!! */
+/* .dropdownContent::-webkit-scrollbar {
+  width: 2px;
+} 
+
+.dropdownContent::-webkit-scrollbar-thumb {
+  background-color: #FFFFFF;
+  border-radius: 10px;
+}
+
+.dropdownContent::-webkit-scrollbar-track {
+  background-color: #4B4949;
+  border-radius: 10px;
+  margin: 5px;
+}
+
+ .dropdownContent::-webkit-scrollbar-button {
+  display: none;
+} */
+
+.dropdownItem {
+  font-family: 'StratosSkyeng', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 20px;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.dropdownItem:hover {
+  color: #B672FF;
+  text-decoration-line: underline;
+}
