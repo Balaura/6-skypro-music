@@ -1,26 +1,10 @@
 
-.containerEnter {
-  max-width: 100%;
-  height: 100vh;
-  margin: 0 auto;
-  position: relative;
-  background-color: rgba(0, 0, 0, 0.85);
-}
-
-.modalBtnEnter:hover {
-  background-color: #3f007d;
-}
-
-.modalBtnSignup:hover {
-  background-color: #f4f5f6;
-}
-
-.modalBtnEnter:active {
-  background-color: #271a58;
-}
-
-.modalBtnSignup:active {
-  background-color: #d9d9d9;
+@font-face {
+  font-family: 'Stratos';
+  src: url('/fonts/StratosSkyeng.woff2') format('woff2'),
+       url('/fonts/StratosSkyeng.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
 .modalBlock {
@@ -111,6 +95,10 @@
 }
 
 .modalBtnEnter {
+  font-family: 'Stratos';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
   width: 278px;
   height: 52px;
   background-color: #580ea2;

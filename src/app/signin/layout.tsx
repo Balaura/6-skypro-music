@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import styles from './signIn.module.css'
+import styles from './signin.module.css'
 
 const SigninLayout = ({ children }: { children: React.ReactNode }) => {
   return (
