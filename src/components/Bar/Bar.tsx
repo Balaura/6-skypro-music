@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import Player from '@/components/Player/Player';
 import TrackPlay from '@/components/TrackPlay/TrackPlay';

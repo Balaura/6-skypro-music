@@ -10,6 +10,8 @@ interface AudioPlayerState {
   volume: number;
   currentTime: number;
   duration: number;
+  favoriteTracks: number[];
+  isLoading: boolean;
 }
 
 const initialState: AudioPlayerState = {
@@ -21,6 +23,8 @@ const initialState: AudioPlayerState = {
   volume: 0.5,
   currentTime: 0,
   duration: 0,
+  favoriteTracks: [],
+  isLoading: true,
 };
 
 const audioPlayerSlice = createSlice({
@@ -54,6 +58,23 @@ const audioPlayerSlice = createSlice({
     initializePlaylist: (state, action: PayloadAction<Track[]>) => {
       state.playlist = action.payload;
     },
+    addToFavorites: (state, action: PayloadAction<number>) => {
+      if (!state.favoriteTracks.includes(action.payload)) {
+        state.favoriteTracks.push(action.payload);
+      }
+    },
+    removeFromFavorites: (state, action: PayloadAction<number>) => {
+      state.favoriteTracks = state.favoriteTracks.filter(id => id !== action.payload);
+    },
+    setFavoriteTracks: (state, action: PayloadAction<number[]>) => {
+      state.favoriteTracks = action.payload;
+    },
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
+    clearFavoriteTracks: (state) => {
+      state.favoriteTracks = [];
+    },
   },
 });
 
@@ -67,6 +88,11 @@ export const {
   setCurrentTime,
   setDuration,
   initializePlaylist,
+  addToFavorites,
+  removeFromFavorites,
+  setFavoriteTracks,
+  setIsLoading,
+  clearFavoriteTracks,
 } = audioPlayerSlice.actions;
 
 export default audioPlayerSlice.reducer;

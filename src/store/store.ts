@@ -1,19 +1,16 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { authReducer } from "./features/authSlice";
+import authReducer from "./features/authSlice";
 import { TypedUseSelectorHook, useDispatch, useSelector, useStore } from "react-redux";
 import audioPlayerReducer from './features/audioPlayerSlice';
 
-// Функция makeStore создает и возвращает хранилище Redux с помощью функции configureStore.
 export const makeStore = () => {
   return configureStore({
-    // Мы передаем объект, в котором свойство reducer содержит корневой редьюсер, объединяющий все редьюсеры нашего приложения.
-    reducer: combineReducers({
+    reducer: {
       auth: authReducer,
       audioPlayer: audioPlayerReducer,
-    }),
+    },
   });
 };
-
 // Тип AppStore представляет собой тип нашего хранилища Redux, который возвращает функция makeStore.
 export type AppStore = ReturnType<typeof makeStore>;
 
@@ -26,4 +23,4 @@ export type AppDispatch = AppStore["dispatch"];
 // Хуки useAppDispatch, useAppSelector и useAppStore позволяют использовать функции useDispatch, useSelector и useStore из библиотеки react-redux с типизацией.
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
-export const useAppStore: () => AppStore = useStore;
+export const useAppStore: () => AppStore = useStore;       

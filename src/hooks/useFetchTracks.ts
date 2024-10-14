@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { initializePlaylist } from '@/store/features/audioPlayerSlice';
-
+import { initializePlaylist, setFavoriteTracks, setIsLoading } from '@/store/features/audioPlayerSlice';
+import { getAllFavoriteTracks, getAllTracks } from '@/api/api';
 export interface Track {
   artist: any;
   _id: number;
@@ -19,44 +19,48 @@ interface ApiResponse {
 }
 
 const useFetchTracks = () => {
-  const [tracks, setTracks] = useState<Track[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchTracks = async () => {
+      dispatch(setIsLoading(true));
       try {
-        const response = await fetch('https://webdev-music-003b5b991590.herokuapp.com/catalog/track/all/');
+        const [allTracksData, favoriteTracksData] = await Promise.all([
+          getAllTracks(),
+          getAllFavoriteTracks()
+        ]);
 
-        if (!response.ok) {
+        if (!allTracksData.success) {
           throw new Error('Не удалось загрузить треки');
         }
-        const data = await response.json();
 
-        if (Array.isArray(data)) {
-
-          setTracks(data);
-          dispatch(initializePlaylist(data));
-        } else if (data.success && Array.isArray(data.data)) {
-          setTracks(data.data);
-          dispatch(initializePlaylist(data.data));
+        if (Array.isArray(allTracksData.data)) {
+          dispatch(initializePlaylist(allTracksData.data));
         } else {
-          throw new Error('Неверный формат данных');
+          throw new Error('Неверный формат данных для всех треков');
         }
+
+        console.log('favoriteTracksData', favoriteTracksData);
+
+        if (favoriteTracksData && Array.isArray(favoriteTracksData.data)) {
+          const favoriteIds = favoriteTracksData.data.map((track: { _id: number; }) => track._id);
+          dispatch(setFavoriteTracks(favoriteIds));
+        }
+
         setError(null);
       } catch (err) {
         setError('Произошла ошибка при загрузке треков');
         console.error('Ошибка при загрузке треков:', err);
       } finally {
-        setLoading(false);
+        dispatch(setIsLoading(false));
       }
     };
 
     fetchTracks();
-  }, []);
+  }, [dispatch]);
 
-  return { tracks, error, loading };
+  return { error };
 };
 
 export default useFetchTracks;

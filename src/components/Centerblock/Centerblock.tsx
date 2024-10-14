@@ -1,30 +1,31 @@
 "use client";
 
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 import Search from '@/components/Search/Search';
 import Filter from '@/components/Filter/Filter';
 import styles from './Centerblock.module.css';
 import Playlist from '@/components/Playlist/Playlist';
-import { Track } from '@/hooks/useFetchTracks';
-import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 
 interface CenterblockProps {
-  tracks: Track[];
-  error: string | null;
-  loading: boolean;
+  title?: string;
 }
 
-const Centerblock: React.FC<CenterblockProps> = ({ tracks, error, loading, }) => {
+const Centerblock: React.FC<CenterblockProps> = ({
+  title = "Треки"
+}) => {
+  const { playlist, isLoading } = useSelector((state: RootState) => state.audioPlayer);
 
   return (
     <div className={styles.centerblock}>
       <Search />
-      <h2 className={styles.h2}>Треки</h2>
-      <Filter tracks={tracks} />
-      {loading ? (
-        <p>Загрузка...</p>
-      ) : error ? (
-        <p>{error}</p>
+      <h2 className={styles.h2}>{title}</h2>
+      <Filter />
+      {isLoading ? (
+        <p>Loading tracks...</p>
+      ) : playlist.length === 0 ? (
+        <p>No tracks available</p>
       ) : (
         <Playlist />
       )}

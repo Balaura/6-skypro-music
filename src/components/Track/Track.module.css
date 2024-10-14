@@ -136,3 +136,52 @@
       transform: scale(1);
     }
   }
+
+  .likeBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 17px;
+  }
+  
+  .likeSvg {
+    width: 14px;
+    height: 12px;
+    fill: transparent;
+    stroke: #696969;
+    transition: all 0.3s ease;
+  }
+  
+  .likeBtn:hover .likeSvg {
+    stroke: #ACACAC;
+  }
+  
+  .likeBtn.liked .likeSvg {
+    fill: #B672FF;
+    stroke: #B672FF;
+  }
+  
+  .likeBtn.liked:hover .likeSvg {
+    opacity: 0.8;
+  }
+  
+  .likeBtn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  
+  .error {
+    color: #ff4d4d;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  .likeBtn.loading .likeSvg {
+    animation: rotate 1s linear infinite;
+  }

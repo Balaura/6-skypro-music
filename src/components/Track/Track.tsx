@@ -1,6 +1,10 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToFavorites, removeFromFavorites } from '@/store/features/audioPlayerSlice';
+import { addTrackToFavorites, removeTrackFromFavorites } from '@/api/api';
+import { RootState } from '@/store/store';
 import styles from './Track.module.css';
 import { Track as TrackType } from '@/hooks/useFetchTracks';
 
@@ -10,10 +14,35 @@ interface TrackProps extends TrackType {
   onPlay: () => void;
 }
 
-const Track: React.FC<TrackProps> = ({ name, author, album, duration_in_seconds, isPlaying, onPlay, isCurrentTrack }) => {
+const Track: React.FC<TrackProps> = ({ _id, name, author, album, duration_in_seconds, isPlaying, onPlay, isCurrentTrack }) => {
   const minutes = Math.floor(duration_in_seconds / 60);
   const seconds = duration_in_seconds % 60;
   const formatDuration = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  const dispatch = useDispatch();
+  const favoriteTracks = useSelector((state: RootState) => state.audioPlayer.favoriteTracks);
+  const isFavorite = favoriteTracks.includes(_id);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleLike = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsLoading(true);
+    setError(null);
+    try {
+      if (isFavorite) {
+        await removeTrackFromFavorites(_id);
+        dispatch(removeFromFavorites(_id));
+      } else {
+        await addTrackToFavorites(_id);
+        dispatch(addToFavorites(_id));
+      }
+    } catch (error) {
+      console.error('Ошибка при обновлении избранного:', error);
+      setError('Не удалось обновить избранное');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className={styles.item}>
@@ -49,12 +78,19 @@ const Track: React.FC<TrackProps> = ({ name, author, album, duration_in_seconds,
           </a>
         </div>
         <div className={styles.time}>
-          <svg className={styles.timeSvg}>
-            <use xlinkHref="img/icon/sprite.svg#icon-like"></use>
-          </svg>
+          <button
+            className={`${styles.likeBtn} ${isFavorite ? styles.liked : ''}`}
+            onClick={handleLike}
+            disabled={isLoading}
+          >
+            <svg className={styles.likeSvg}>
+              <use xlinkHref={isFavorite ? "img/icon/sprite.svg#icon-like-filled" : "img/icon/sprite.svg#icon-like"}></use>
+            </svg>
+          </button>
           <span className={styles.timeText}>{formatDuration}</span>
         </div>
       </div>
+      {error && <div className={styles.error}>{error}</div>}
     </div>
   );
 };
