@@ -252,11 +252,11 @@ export const getAllSelections = async () => {
 
 export const getSelectionById = async (id: number) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/selection/${id}`)
-    await handleErrors(response)
-    return response.json()
+    const response = await fetch(`${API_BASE_URL}/selection/${id}/`);
+    await handleErrors(response);
+    return response.json();
   } catch (error) {
-    console.error(`Ошибка при получении подборки с ID ${id}:`, error)
-    throw error
+    console.error(`Ошибка при получении подборки с ID ${id}:`, error);
+    throw error;
   }
-}
+};

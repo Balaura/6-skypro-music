@@ -5,7 +5,6 @@ import styles from './Player.module.css';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 import { RootState } from '@/store/store';
 
-
 const Player: React.FC = () => {
   const { isPlaying, isLooping, isShuffling } = useSelector((state: RootState) => state.audioPlayer);
   const {
