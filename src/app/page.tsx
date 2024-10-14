@@ -10,9 +10,9 @@ export default function Home() {
   const { error } = useFetchTracks();
   const isLoading = useSelector((state: RootState) => state.audioPlayer.isLoading);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
   if (error) {
     return <div>Error: {error}</div>;

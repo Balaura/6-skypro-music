@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { logout } from '@/store/features/authSlice';
 import { clearFavoriteTracks } from '@/store/features/audioPlayerSlice';
 import { getAllSelections } from '@/api/api';
-
+import Skeleton from '../Skeleton/Skeleton';
 interface Selection {
   _id: number;
   name: string;
@@ -61,7 +61,8 @@ const Sidebar = () => {
       <div className={styles.block}>
         <div className={styles.list}>
           {isLoading ? (
-            <p>Загрузка подборок...</p>
+            // <p>Загрузка подборок...</p>
+            <Skeleton type="selection" count={3} />
           ) : error ? (
             <p>{error}</p>
           ) : (

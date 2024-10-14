@@ -10,7 +10,7 @@ import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 import PlaylistTitle from '../PlaylistTitle/PlaylistTitle';
 import { Track as TrackType } from '@/hooks/useFetchTracks';
 import { getSelectionById } from '@/api/api';
-import { setIsLoading } from '@/store/features/audioPlayerSlice';
+import Skeleton from '../Skeleton/Skeleton';
 
 interface PlaylistProps {
   customTracks?: TrackType[];
@@ -32,13 +32,9 @@ const Playlist: React.FC = () => {
           break;
         case pathname.startsWith('/playlist/'):
           const playlistId = params.id as string;
-          console.log('playlistId', playlistId);
           const data = await getSelectionById(Number(playlistId));
-          console.log('data', data);
           const selectionTracks = data.data.items;
-          console.log('selectionTracks', selectionTracks);
           tracks = playlist.filter(track => selectionTracks.includes(track._id));
-          console.log('tracks', tracks);
           break;
         default:
           tracks = playlist;
@@ -51,7 +47,12 @@ const Playlist: React.FC = () => {
   }, [pathname, params, playlist, favoriteTracks]);
 
   if (isLoading) {
-    return <p>Loading tracks...</p>;
+    return (
+      <div className={styles.playlist}>
+        <PlaylistTitle />
+        <Skeleton type="playlist" count={5} />
+      </div>
+    );
   }
 
   if (displayedTracks.length === 0) {
@@ -67,7 +68,7 @@ const Playlist: React.FC = () => {
           {...track}
           isPlaying={isPlaying}
           isCurrentTrack={currentTrack?._id === track._id}
-          onPlay={() => handlePlay(track, playlist)}
+          onPlay={() => handlePlay(track, displayedTracks)}
         />
       ))}
     </div>

@@ -1,0 +1,142 @@
+.skeletonWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  overflow: hidden;
+}
+
+.skeletonItem {
+  position: relative;
+  overflow: hidden;
+}
+
+.skeletonItem::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+   
+   /* Bar Skeleton */
+   .barContainer {
+     display: flex;
+     align-items: center;
+     width: 122px;
+     height: 51px;
+   }
+   
+   .barImage {
+     width: 51px;
+     height: 51px;
+     background-color: #313131;
+   }
+   
+   .barTextContainer {
+     display: flex;
+     flex-direction: column;
+     margin-left: 12px;
+   }
+   
+   .barText {
+     width: 59px;
+     height: 15px;
+     background-color: #313131;
+     margin-bottom: 5px;
+   }
+   
+   /* Playlist Skeleton */
+   .playlistContainer {
+     display: flex;
+     align-items: center;
+     width: 100%;
+     max-width: 1107px;
+     height: 51px;
+   }
+   
+   .playlistImage {
+     width: 51px;
+     height: 51px;
+     background-color: #313131;
+   }
+   
+   .playlistTextContainer {
+     display: flex;
+     justify-content: space-between;
+     width: calc(100% - 68px);
+     margin-left: 17px;
+   }
+   
+   .playlistText {
+     height: 19px;
+     background-color: #313131;
+   }
+   
+   .playlistText:nth-child(1) {
+     width: 35%;
+   }
+   
+   .playlistText:nth-child(2) {
+     width: 25%;
+   }
+   
+   .playlistText:nth-child(3) {
+     width: 30%;
+   }
+   
+   /* Selection Skeleton */
+   .selectionContainer {
+    width: 250px;
+    height: 150px;
+    background-color: #313131;
+    border-radius: 8px;
+  }
+   
+   .selectionImage {
+     width: 100%;
+     height: 100%;
+     background-color: #313131;
+   }
+   
+   @media (max-width: 768px) {
+     .playlistContainer {
+       flex-wrap: wrap;
+     }
+   
+     .playlistTextContainer {
+       width: 100%;
+       margin-left: 0;
+       margin-top: 10px;
+     }
+   
+     .selectionContainer {
+       width: 100%;
+       height: 0;
+       padding-bottom: 60%; 
+     }
+   }
+
+   @media (max-width: 768px) {
+    .selectionContainer {
+      width: 100%;
+      height: 0;
+      padding-bottom: 60%; /* Сохраняем соотношение сторон */
+    }
+  }

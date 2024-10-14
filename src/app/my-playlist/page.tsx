@@ -13,9 +13,9 @@ export default function MyPlaylist() {
   const isLoading = useSelector((state: RootState) => state.audioPlayer.isLoading);
   const router = useRouter();
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
   if (error) {
     return <div>Error: {error}</div>;

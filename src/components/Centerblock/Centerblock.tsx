@@ -22,13 +22,9 @@ const Centerblock: React.FC<CenterblockProps> = ({
       <Search />
       <h2 className={styles.h2}>{title}</h2>
       <Filter />
-      {isLoading ? (
-        <p>Loading tracks...</p>
-      ) : playlist.length === 0 ? (
-        <p>No tracks available</p>
-      ) : (
+    
         <Playlist />
-      )}
+      
     </div>
   );
 };

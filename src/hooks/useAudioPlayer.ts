@@ -74,7 +74,6 @@ export const useAudioPlayer = () => {
     };
 
     if (currentTrack?._id !== track._id) {
-      dispatch(setPlaylist(newPlaylist));
       dispatch(setCurrentTrack(track));
       audio.src = track.track_file;
 
