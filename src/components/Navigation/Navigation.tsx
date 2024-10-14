@@ -40,7 +40,7 @@ const Navigation = () => {
         <span className={styles.burgerLine}></span>
       </div>
       {isMenuOpen && (
-        <div className={styles.menu}>
+        <div className={`{styles.menu} $ {styles.menuopen}`}>
           <ul className={styles.menuList}>
             <li className={styles.menuItem}><Link href="/" className={styles.menuLink}>Главное</Link></li>
             {username && <li className={styles.menuItem}><Link href="/my-playlist" className={styles.menuLink}>Избранное</Link></li>}

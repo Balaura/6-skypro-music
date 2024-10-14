@@ -67,7 +67,7 @@ const TrackPlay: React.FC<TrackPlayProps> = ({ currentTrack }) => {
             <use xlinkHref={isFavorite ? "img/icon/sprite.svg#icon-like" : "img/icon/sprite.svg#icon-dislike"}></use>
           </svg>
         </button>
-        <div className={`${styles.like} ${styles._btnIcon}`}>
+        {/* <div className={`${styles.like} ${styles._btnIcon}`}>
           <svg className={styles.likeSvg}>
             <use xlinkHref="img/icon/sprite.svg#icon-like"></use>
           </svg>
@@ -76,7 +76,7 @@ const TrackPlay: React.FC<TrackPlayProps> = ({ currentTrack }) => {
           <svg className={styles.dislikeSvg}>
             <use xlinkHref="img/icon/sprite.svg#icon-dislike"></use>
           </svg>
-        </div>
+        </div> */}
       </div>
     </div>
   );

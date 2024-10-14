@@ -78,13 +78,13 @@ const Track: React.FC<TrackProps> = ({ _id, name, author, album, duration_in_sec
           </a>
         </div>
         <div className={styles.time}>
-          <button
-            className={`${styles.likeBtn} ${isFavorite ? styles.liked : ''}`}
+        <button 
+            className={`${styles.likeBtn} ${isFavorite ? styles.liked : ''}`} 
             onClick={handleLike}
             disabled={isLoading}
           >
             <svg className={styles.likeSvg}>
-              <use xlinkHref={isFavorite ? "img/icon/sprite.svg#icon-like-filled" : "img/icon/sprite.svg#icon-like"}></use>
+              <use xlinkHref={isFavorite ? "img/icon/sprite.svg#icon-like" : "img/icon/sprite.svg#icon-dislike"}></use>
             </svg>
           </button>
           <span className={styles.timeText}>{formatDuration}</span>

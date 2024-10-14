@@ -62,33 +62,49 @@
      color: #ffffff;
    }
    
-   .likeDis {
-     display: flex;
-     flex-direction: row;
-     align-items: center;
-     margin-left: 26%;
-   }
-   
-   .like,
-   .dislike {
-     padding: 5px;
-   }
-   
-   .likeSvg {
-     width: 14px;
-     height: 12px;
-     fill: transparent;
-     stroke: #696969;
-   }
-   
-   .dislike {
-     margin-left: 28.5px;
-   }
-   
-   .dislikeSvg {
-     width: 14.34px;
-     height: 13px;
-     fill: transparent;
-     stroke: #696969;
-   }
-   
+  .likeDis {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    padding-left: 40px;
+  }
+  
+  .like,
+  .dislike {
+    padding: 5px;
+    position: relative;
+    width: 14px;
+    height: 12px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    background: none;
+  }
+  
+  .likeBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .likeSvg {
+    width: 14px;
+    height: 12px;
+    fill: transparent;
+    stroke: #696969;
+    stroke-width: 1px;
+  }
+  
+  .likeBtn:hover .likeSvg {
+    stroke: #ACACAC;
+  }
+  
+  .likeBtn.liked .likeSvg {
+    fill: #B672FF;
+    stroke: #B672FF;
+  }
