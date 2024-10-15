@@ -69,7 +69,7 @@ exports[`Track component renders correctly 1`] = `
           className="likeSvg"
         >
           <use
-            xlinkHref="/img/icon/sprite.svg#icon-dislike"
+            xlinkHref="/img/icon/sprite.svg#icon-like"
           />
         </svg>
       </button>
