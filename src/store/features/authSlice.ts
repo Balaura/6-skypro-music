@@ -1,3 +1,5 @@
+// src/store/features/authSlice.ts
+
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { TokenResponse, loginUser, refreshToken, registerUser } from '../../api/api'
 import { clearFavoriteTracks } from './audioPlayerSlice'
@@ -10,13 +12,26 @@ export interface AuthState {
   error: string | null
 }
 
-const initialState: AuthState = {
-  accessToken: null,
-  refreshToken: null,
-  username: null,
-  status: 'idle',
-  error: null,
+const loadState = (): AuthState => {
+  if (typeof window !== 'undefined') {
+    return {
+      accessToken: localStorage.getItem('accessToken'),
+      refreshToken: localStorage.getItem('refreshToken'),
+      username: localStorage.getItem('username'),
+      status: 'idle',
+      error: null,
+    }
+  }
+  return {
+    accessToken: null,
+    refreshToken: null,
+    username: null,
+    status: 'idle',
+    error: null,
+  }
 }
+
+const initialState: AuthState = loadState()
 
 export const login = createAsyncThunk(
   'auth/signin',
@@ -56,6 +71,9 @@ const authSlice = createSlice({
   reducers: {
     setUser(state, action: PayloadAction<string>) {
       state.username = action.payload
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('username', action.payload)
+      }
     },
     logout(state) {
       state.accessToken = null
@@ -63,10 +81,19 @@ const authSlice = createSlice({
       state.username = null
       state.status = 'idle'
       state.error = null
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('refreshToken')
-      localStorage.removeItem('username')
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('refreshToken')
+        localStorage.removeItem('username')
+      }
       clearFavoriteTracks()
+    },
+    initializeAuth(state) {
+      if (typeof window !== 'undefined') {
+        state.accessToken = localStorage.getItem('accessToken')
+        state.refreshToken = localStorage.getItem('refreshToken')
+        state.username = localStorage.getItem('username')
+      }
     },
   },
   extraReducers: builder => {
@@ -84,9 +111,11 @@ const authSlice = createSlice({
           state.accessToken = action.payload.access
           state.refreshToken = action.payload.refresh
           state.username = action.payload.username
-          localStorage.setItem('accessToken', action.payload.access)
-          localStorage.setItem('refreshToken', action.payload.refresh)
-          localStorage.setItem('username', action.payload.username)
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('accessToken', action.payload.access)
+            localStorage.setItem('refreshToken', action.payload.refresh)
+            localStorage.setItem('username', action.payload.username)
+          }
         }
       )
       .addCase(login.rejected, (state, action) => {
@@ -101,7 +130,9 @@ const authSlice = createSlice({
         (state, action: PayloadAction<{ username: string }>) => {
           state.status = 'idle'
           state.username = action.payload.username
-          localStorage.setItem('username', action.payload.username)
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('username', action.payload.username)
+          }
         }
       )
       .addCase(register.rejected, (state, action) => {
@@ -112,7 +143,9 @@ const authSlice = createSlice({
         refreshAuthToken.fulfilled,
         (state, action: PayloadAction<TokenResponse>) => {
           state.accessToken = action.payload.access
-          localStorage.setItem('accessToken', action.payload.access)
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('accessToken', action.payload.access)
+          }
         }
       )
       .addCase(refreshAuthToken.rejected, (state, action) => {
@@ -121,6 +154,6 @@ const authSlice = createSlice({
   },
 })
 
-export const { logout, setUser } = authSlice.actions
+export const { logout, setUser, initializeAuth } = authSlice.actions
 
 export default authSlice.reducer

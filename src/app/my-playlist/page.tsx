@@ -13,18 +13,18 @@ export default function MyPlaylist() {
   const isLoading = useSelector((state: RootState) => state.audioPlayer.isLoading);
   const router = useRouter();
 
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
+  useEffect(() => {
+    if (!username) {
+      router.push('/signin');
+    }
+  }, [username, router]);
 
   if (error) {
     return <div>Error: {error}</div>;
   }
 
-
   if (!username) {
-    router.push('/signin');
-    return null;
+    return null; // или можно вернуть компонент загрузки
   }
 
   return (

@@ -3,7 +3,8 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "esnext",
+      "es6",
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -40,10 +41,5 @@
   ],
   "exclude": [
     "node_modules"
-  ],
-  "types": [
-    "jest",
-    "node"
-  ],
-  "esModuleInterop": true
+  ]
 }

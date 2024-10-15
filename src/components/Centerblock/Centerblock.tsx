@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import Search from '@/components/Search/Search';
@@ -15,7 +15,15 @@ interface CenterblockProps {
 const Centerblock: React.FC<CenterblockProps> = ({
   title = "Треки"
 }) => {
-  const { playlist, isLoading } = useSelector((state: RootState) => state.audioPlayer);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return <div className={styles.search}></div>;
+  }
 
   return (
     <div className={styles.centerblock}>

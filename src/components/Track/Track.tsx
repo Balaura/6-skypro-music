@@ -33,11 +33,19 @@ const Track: React.FC<TrackProps> = ({ _id, name, author, album, duration_in_sec
   const isFavorite = favoriteTracks.includes(_id);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const username = useSelector((state: RootState) => state.auth.username);
 
   const handleLike = async (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsLoading(true);
     setError(null);
+
+    if (!username) {
+      alert("Пожалуйста, авторизуйтесь для добавления трека в избранное.");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       if (isFavorite) {
         await removeTrackFromFavorites(_id);
@@ -48,7 +56,6 @@ const Track: React.FC<TrackProps> = ({ _id, name, author, album, duration_in_sec
       }
     } catch (error) {
       console.error('Ошибка при обновлении избранного:', error);
-      setError('Войдите в аккаунт и попробуйте ещё раз');
     } finally {
       setIsLoading(false);
     }
@@ -97,7 +104,7 @@ const Track: React.FC<TrackProps> = ({ _id, name, author, album, duration_in_sec
             disabled={isLoading}
           >
             <svg className={styles.likeSvg}>
-              <use xlinkHref={isFavorite ? "/img/icon/sprite.svg#icon-like" : "/img/icon/sprite.svg#icon-dislike"}></use>
+              <use xlinkHref={"/img/icon/sprite.svg#icon-like"}></use>
             </svg>
           </button>
           <span className={styles.timeText}>{formatDuration}</span>
