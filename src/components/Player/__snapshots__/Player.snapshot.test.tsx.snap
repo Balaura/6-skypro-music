@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Player component renders correctly 1`] = `
+<div
+  className="player"
+>
+  <div
+    className="controls"
+  >
+    <div
+      className="btnPrev"
+      onClick={[MockFunction]}
+    >
+      <svg
+        className="btnPrevSvg"
+      >
+        <use
+          data-testid="prev-button"
+          xlinkHref="/img/icon/sprite.svg#icon-prev"
+        />
+      </svg>
+    </div>
+    <div
+      className="btnPlay _btn"
+      data-testid="play-button"
+      onClick={[MockFunction]}
+    >
+      <svg
+        className="btnPlaySvg"
+      >
+        <use
+          xlinkHref="/img/icon/sprite.svg#icon-play"
+        />
+      </svg>
+    </div>
+    <div
+      className="btnNext"
+      data-testid="next-button"
+      onClick={[MockFunction]}
+    >
+      <svg
+        className="btnNextSvg"
+      >
+        <use
+          xlinkHref="/img/icon/sprite.svg#icon-next"
+        />
+      </svg>
+    </div>
+    <div
+      className="btnRepeat _btnIcon "
+      data-testid="repeat-button"
+      onClick={[MockFunction]}
+    >
+      <svg
+        className="btnRepeatSvg"
+      >
+        <use
+          xlinkHref="/img/icon/sprite.svg#icon-repeat"
+        />
+      </svg>
+    </div>
+    <div
+      className="btnShuffle _btnIcon "
+      data-testid="shuffle-button"
+      onClick={[MockFunction]}
+    >
+      <svg
+        className="btnShuffleSvg"
+      >
+        <use
+          xlinkHref="/img/icon/sprite.svg#icon-shuffle"
+        />
+      </svg>
+    </div>
+  </div>
+</div>
+`;

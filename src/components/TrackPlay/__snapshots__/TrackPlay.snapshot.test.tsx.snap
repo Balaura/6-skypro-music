@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TrackPlay component renders correctly 1`] = `
+<div
+  className="trackPlay"
+>
+  <div
+    className="contain"
+  >
+    <div
+      className="image"
+    >
+      <svg
+        className="svg"
+      >
+        <use
+          xlinkHref="/img/icon/sprite.svg#icon-note"
+        />
+      </svg>
+    </div>
+    <div
+      className="author"
+    >
+      <a
+        className="authorLink"
+        href="#"
+      >
+        Test Track
+      </a>
+    </div>
+    <div
+      className="album"
+    >
+      <a
+        className="albumLink"
+        href="#"
+      >
+        Test Author
+      </a>
+    </div>
+  </div>
+  <div
+    className="likeDis"
+  >
+    <button
+      className="likeBtn "
+      disabled={false}
+      onClick={[Function]}
+    >
+      <svg
+        className="likeSvg"
+      >
+        <use
+          xlinkHref="/img/icon/sprite.svg#icon-dislike"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
+`;
