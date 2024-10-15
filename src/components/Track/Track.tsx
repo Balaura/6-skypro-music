@@ -7,11 +7,21 @@ import { addTrackToFavorites, removeTrackFromFavorites } from '@/api/api';
 import { RootState } from '@/store/store';
 import styles from './Track.module.css';
 import { Track as TrackType } from '@/hooks/useFetchTracks';
-
 interface TrackProps extends TrackType {
   isPlaying: boolean;
   isCurrentTrack: boolean;
   onPlay: () => void;
+}
+
+export interface Track {
+  _id: number;
+  name: string;
+  author: string;
+  release_date: string;
+  genre: string;
+  duration_in_seconds: number;
+  album: string;
+  track_file: string;
 }
 
 const Track: React.FC<TrackProps> = ({ _id, name, author, album, duration_in_seconds, isPlaying, onPlay, isCurrentTrack }) => {
@@ -38,7 +48,7 @@ const Track: React.FC<TrackProps> = ({ _id, name, author, album, duration_in_sec
       }
     } catch (error) {
       console.error('Ошибка при обновлении избранного:', error);
-      setError('Не удалось обновить избранное');
+      setError('Войдите в аккаунт и попробуйте ещё раз');
     } finally {
       setIsLoading(false);
     }

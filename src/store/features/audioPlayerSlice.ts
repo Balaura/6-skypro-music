@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Track } from '@/hooks/useFetchTracks';
 
-interface AudioPlayerState {
+export interface AudioPlayerState {
   isPlaying: boolean;
   currentTrack: Track | null;
   playlist: Track[];
@@ -14,7 +14,7 @@ interface AudioPlayerState {
   isLoading: boolean;
 }
 
-const initialState: AudioPlayerState = {
+export const initialState: AudioPlayerState = {
   isPlaying: false,
   currentTrack: null,
   playlist: [],

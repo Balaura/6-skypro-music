@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { TokenResponse, loginUser, refreshToken, registerUser } from '../../api/api'
 import { clearFavoriteTracks } from './audioPlayerSlice'
 
-interface AuthState {
+export interface AuthState {
   accessToken: string | null
   refreshToken: string | null
   username: string | null

@@ -34,7 +34,7 @@ const TrackPlay: React.FC<TrackPlayProps> = ({ currentTrack }) => {
       }
     } catch (error) {
       console.error('Ошибка при обновлении избранного:', error);
-      setError('Не удалось обновить избранное');
+      setError('Войдите в аккаунт и попробуйте ещё раз');
     } finally {
       setIsLoading(false);
     }
