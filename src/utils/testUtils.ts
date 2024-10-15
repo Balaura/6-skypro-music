@@ -17,9 +17,12 @@ const rootReducer = combineReducers({
 });
 
 // Функция для создания тестового store
-export const createTestStore = (preloadedState?: Partial<RootState>) => {
+export const createTestStore = (preloadedState = {}) => {
   return configureStore({
-    reducer: rootReducer,
-    preloadedState: preloadedState as RootState,
+    reducer: {
+      audioPlayer: audioPlayerReducer,
+      auth: authReducer,
+    },
+    preloadedState
   });
 };

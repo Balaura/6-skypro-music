@@ -13,10 +13,10 @@ export interface Track {
   album: string;
   track_file: string;
 }
-interface ApiResponse {
-  success: boolean;
-  data: Track[];
-}
+// interface ApiResponse {
+//   success: boolean;
+//   data: Track[];
+// }
 
 const useFetchTracks = () => {
   const [error, setError] = useState<string | null>(null);
@@ -40,8 +40,6 @@ const useFetchTracks = () => {
         } else {
           throw new Error('Неверный формат данных для всех треков');
         }
-
-        console.log('favoriteTracksData', favoriteTracksData);
 
         if (favoriteTracksData && Array.isArray(favoriteTracksData.data)) {
           const favoriteIds = favoriteTracksData.data.map((track: { _id: number; }) => track._id);

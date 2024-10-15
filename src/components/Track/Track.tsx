@@ -58,11 +58,14 @@ const Track: React.FC<TrackProps> = ({ _id, name, author, album, duration_in_sec
     <div className={styles.item}>
       <div className={styles.track}>
         <div className={styles.title}>
-          <div className={styles.titleImage} onClick={onPlay}>
-            {isCurrentTrack ? isPlaying ? (
-              <div className={styles.playing_dot}></div> // Анимация только во время проигрывания
-            ) : (
-              <div className={styles.not_playing_dot}></div> // Анимация только во время проигрывания
+          {/* для теста */}
+          <div className={styles.titleImage} onClick={onPlay} data-testid="play-button">
+            {isCurrentTrack ? (
+              isPlaying ? (
+                <div className={styles.playing_dot} data-testid="playing-animation"></div>
+              ) : (
+                <div className={styles.not_playing_dot}></div>
+              )
             ) : (
               <svg className={styles.titleSvg}>
                 <use xlinkHref="/img/icon/sprite.svg#icon-note" />

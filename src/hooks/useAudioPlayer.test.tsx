@@ -1,12 +1,39 @@
 import React from 'react';
 import { render, act } from '@testing-library/react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useAudioPlayer } from './useAudioPlayer';
 import { Track } from '@/hooks/useFetchTracks';
 
+// Мок для react-redux
+const mockDispatch = jest.fn();
 jest.mock('react-redux', () => ({
-  useDispatch: jest.fn(),
-  useSelector: jest.fn(),
+  ...jest.requireActual('react-redux'),
+  useDispatch: () => mockDispatch,
+  useSelector: jest.fn().mockImplementation((selector) => 
+    selector({
+      audioPlayer: {
+        isPlaying: false,
+        currentTrack: null,
+        playlist: [],
+        volume: 0.5,
+      }
+    })
+  ),
+}));
+
+// Фабричная функция для создания мока аудио
+const createMockAudio = () => ({
+  play: jest.fn(),
+  pause: jest.fn(),
+  addEventListener: jest.fn(),
+  removeEventListener: jest.fn(),
+  volume: 0.5,
+});
+
+// Мок для audioPlayer
+jest.mock('@/utils/audioPlayer', () => ({
+  getInstance: jest.fn().mockReturnValue({
+    getAudioElement: jest.fn().mockReturnValue(createMockAudio()),
+  }),
 }));
 
 const TestComponent = () => {
@@ -19,18 +46,12 @@ describe('useAudioPlayer hook', () => {
     jest.clearAllMocks();
   });
 
-  it('handlePlay starts playing a new track', () => {
-    const mockDispatch = jest.fn();
-    (useDispatch as unknown as jest.Mock).mockReturnValue(mockDispatch);
-    (useSelector as unknown as jest.Mock).mockReturnValue({
-      isPlaying: false,
-      currentTrack: null,
-      playlist: [],
-    });
-
+  it('handlePlay starts playing a new track', async () => {
     let result: ReturnType<typeof useAudioPlayer> | undefined;
 
-    render(<TestComponent />);
+    await act(async () => {
+      render(<TestComponent />);
+    });
 
     act(() => {
       result = useAudioPlayer();
@@ -49,8 +70,8 @@ describe('useAudioPlayer hook', () => {
     };
     const newPlaylist = [newTrack];
 
-    act(() => {
-      return result?.handlePlay(newTrack, newPlaylist);
+    await act(async () => {
+      result?.handlePlay(newTrack, newPlaylist);
     });
 
     expect(mockDispatch).toHaveBeenCalledWith(expect.objectContaining({

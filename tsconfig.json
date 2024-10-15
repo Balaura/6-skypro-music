@@ -14,7 +14,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "incremental": true,
     "target": "es2015",
     "baseUrl": ".",
@@ -41,6 +41,9 @@
   "exclude": [
     "node_modules"
   ],
-  "types": ["jest", "node"],
-  "esModuleInterop": true,
+  "types": [
+    "jest",
+    "node"
+  ],
+  "esModuleInterop": true
 }

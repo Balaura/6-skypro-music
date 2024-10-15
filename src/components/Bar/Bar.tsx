@@ -18,6 +18,8 @@ const Bar: React.FC = () => {
   if (!currentTrack) {
     return null; // Скрываем Bar, если нет текущего трека
   }
+
+  {currentTrack && <TrackPlay currentTrack={currentTrack} />}  // для теста
   
     return (
       <div className={styles.bar}>
@@ -27,8 +29,7 @@ const Bar: React.FC = () => {
             <div className={styles.barPlayer}>
               <Player />
               {isLoading ? <Skeleton type="bar" /> : <TrackPlay currentTrack={currentTrack} /> }
-              
-            </div>
+                          </div>
             <TimeTrack />
             <Volume />
           </div>

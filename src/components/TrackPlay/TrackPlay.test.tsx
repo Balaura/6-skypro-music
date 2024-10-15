@@ -1,5 +1,5 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import React, { act } from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import TrackPlay from './TrackPlay';
 import { Track } from '@/hooks/useFetchTracks';
@@ -79,18 +79,24 @@ describe('TrackPlay component', () => {
         error: null,
       },
     };
+  
     const store = createTestStore(initialState);
-
+  
     render(
       <Provider store={store}>
         <TrackPlay currentTrack={mockTrack} />
       </Provider>
     );
-
+  
     const likeButton = screen.getByRole('button');
-    fireEvent.click(likeButton);
-
-    const state = store.getState();
-    expect(state.audioPlayer.favoriteTracks).toContain(1);
-  });
+  
+    await act(async () => {
+      fireEvent.click(likeButton);
+    });
+  
+    await waitFor(() => {
+      const state = store.getState();
+      expect(state.audioPlayer.favoriteTracks).toContain(1);
+    });
+  }); 
 });

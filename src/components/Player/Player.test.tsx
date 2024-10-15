@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { createTestStore, RootState } from '../../utils/testUtils';
@@ -48,11 +47,11 @@ describe('Player component', () => {
       </Provider>
     );
 
-    const playButton = screen.getByRole('button', { name: /play/i });
-    const nextButton = screen.getByRole('button', { name: /next/i });
-    const prevButton = screen.getByRole('button', { name: /prev/i });
-    const repeatButton = screen.getByRole('button', { name: /repeat/i });
-    const shuffleButton = screen.getByRole('button', { name: /shuffle/i });
+    const playButton = screen.getByTestId('play-button');
+    const nextButton = screen.getByTestId('next-button');
+    const prevButton = screen.getByTestId('prev-button');
+    const repeatButton = screen.getByTestId('repeat-button');
+    const shuffleButton = screen.getByTestId('shuffle-button');
 
     fireEvent.click(playButton);
     fireEvent.click(nextButton);
