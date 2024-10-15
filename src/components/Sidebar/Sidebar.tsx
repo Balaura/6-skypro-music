@@ -9,6 +9,7 @@ import { logout } from '@/store/features/authSlice';
 import { clearFavoriteTracks } from '@/store/features/audioPlayerSlice';
 import { getAllSelections } from '@/api/api';
 import Skeleton from '../Skeleton/Skeleton';
+import UserDisplay from '../Auth/UserDisplay';
 interface Selection {
   _id: number;
   name: string;
@@ -51,7 +52,7 @@ const Sidebar = () => {
   return (
     <div className={styles.sidebar}>
       <div className={styles.personal}>
-        <p className={styles.personalName}>{username || 'Гость'}</p>
+        <p className={styles.personalName}><UserDisplay /></p>
         <div className={styles.icon} onClick={handleLogout}>
           <svg>
             <use xlinkHref="img/icon/sprite.svg#logout"></use>

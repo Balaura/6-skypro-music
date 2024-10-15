@@ -9,8 +9,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { setUser } from '@/store/features/authSlice'
 
-
-
 const SignIn = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -23,83 +21,64 @@ const SignIn = () => {
 		return re.test(String(email).toLowerCase())
 	}
 
-	// const handleSubmit = async (e: React.FormEvent) => {
-	// 	e.preventDefault()
-	// 	try {
-	// 		const user = await loginUser(email, password)
-	// 		const tokens = await getToken(email, password)
+	const validatePassword = (password: string) => {
+		return password.length >= 6
+	}
 
-	// 		localStorage.setItem('accessToken', tokens.access)
-	// 		localStorage.setItem('refreshToken', tokens.refresh)
-	// 		localStorage.setItem('username', user.username)
-
-	// 		dispatch(setUser(user.username))
-
-	// 		router.push('/')
-
-	// 	} catch (err) {
-	// 		if (err instanceof Error) {
-	// 			let errorMsg = 'Попробуйте снова позже'
-	// 			try {
-	// 				const parsedError = JSON.parse(err.message)
-	// 				if (parsedError && typeof parsedError === 'object') {
-	// 					errorMsg = parsedError
-	// 				}
-	// 			} catch (parseError) { }
-	// 			setError('Ошибка авторизации: ' + errorMsg)
-	// 		} else {
-	// 			setError('Ошибка авторизации: Попробуйте снова позже')
-	// 		}
-	// 	}
-	// }
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 		setError('')
-		
-	if (!validateEmail(email)) {
-		setError('Пожалуйста, введите корректный email адрес')
-		return
-	}
 
-	try {
-		const user = await loginUser(email, password)
-		const tokens = await getToken(email, password)
-		localStorage.setItem('accessToken', tokens.access)
-		localStorage.setItem('refreshToken', tokens.refresh)
-		localStorage.setItem('username', user.username)
-		dispatch(setUser(user.username))
-		router.push('/')
-
-	   } catch (err) {
-
-		if (err instanceof Error) {
-		  let errorMsg = 'Произошла ошибка при входе. Пожалуйста, попробуйте снова.'
-		  try {
-		    const parsedError = JSON.parse(err.message.split(': ')[1])
-		    if (parsedError && typeof parsedError === 'object') {
-			if (parsedError.data && parsedError.data.errors) {
-				if (parsedError.data.errors.password) {
-				  errorMsg = "Пароль должен содержать не менее 6 символов."
-				} else if (parsedError.data.errors.email) {
-				  errorMsg = "Неверный формат email."
-				} else {
-				  errorMsg = "Неверные учетные данные. Пожалуйста, проверьте email и пароль."
-				}
-			   } else {
-				errorMsg = parsedError.message || 'Неизвестная ошибка'
-			   }
-			 }
-
-		  } catch (parseError) {
-		    // Если не удалось распарсить ошибку, оставляем общее сообщение
-		    console.error('Ошибка при парсинге ответа:', parseError)
-		  }
-		  setError(errorMsg)
-		} else {
-		  setError('Произошла неизвестная ошибка. Пожалуйста, попробуйте снова.')
+		if (!validateEmail(email)) {
+			setError('Пожалуйста, введите корректный email адрес')
+			return
 		}
-	   }
-	 }
+
+		if (!validatePassword(password)) {
+			setError('Пароль должен содержать не менее 6 символов.')
+			return
+		}
+
+		try {
+			const user = await loginUser(email, password)
+			const tokens = await getToken(email, password)
+			localStorage.setItem('accessToken', tokens.access)
+			localStorage.setItem('refreshToken', tokens.refresh)
+			localStorage.setItem('username', user.username)
+			dispatch(setUser(user.username))
+			router.push('/')
+
+		} catch (err) {
+
+			if (err instanceof Error) {
+				let errorMsg = ''
+				try {
+					const parsedError = JSON.parse(err.message.split(': ')[1])
+					if (parsedError && typeof parsedError === 'object' && parsedError.data && parsedError.data.errors) {
+						const errors = parsedError.data.errors
+						if (errors.email && errors.email.length > 0) {
+							errorMsg = errors.email[0]
+						}
+						if (errors.password && errors.password.length > 0) {
+							errorMsg += errorMsg ? ' ' : ''
+							errorMsg += errors.password[0]
+						}
+						if (!errorMsg) {
+							errorMsg = "Неверные учетные данные. Пожалуйста, проверьте email и пароль."
+						}
+					} else {
+						errorMsg = parsedError.message || 'Неизвестная ошибка'
+					}
+				} catch (parseError) {
+					// Если не удалось распарсить ошибку, оставляем общее сообщение
+					console.error('Ошибка при парсинге ответа:', parseError)
+				}
+				setError(errorMsg)
+			} else {
+				setError('Произошла неизвестная ошибка. Пожалуйста, попробуйте снова.')
+			}
+		}
+	}
 
 	return (
 		<form className={styles.modalFormLogin} onSubmit={handleSubmit}>
