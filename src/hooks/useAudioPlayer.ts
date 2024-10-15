@@ -7,6 +7,7 @@ import {
   setIsPlaying,
   setCurrentTrack,
   setPlaylist,
+  setCurrentPlaylist,
   setIsShuffling,
   setIsLooping,
   setVolume,
@@ -21,6 +22,7 @@ export const useAudioPlayer = () => {
     isPlaying,
     currentTrack,
     playlist,
+    currentPlaylist,
     isShuffling,
     isLooping,
     volume,
@@ -47,7 +49,7 @@ export const useAudioPlayer = () => {
     return () => {
       audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
       audio.removeEventListener('timeupdate', handleTimeUpdate);
-      audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('ended', playNextTrack);
     };
   }, [dispatch, audio, currentTrack]);
 
@@ -75,6 +77,7 @@ export const useAudioPlayer = () => {
 
     if (currentTrack?._id !== track._id) {
       dispatch(setCurrentTrack(track));
+      dispatch(setCurrentPlaylist(newPlaylist));
       audio.src = track.track_file;
 
       // Добавляем слушатель события 'canplay'
@@ -113,25 +116,26 @@ export const useAudioPlayer = () => {
     dispatch(setIsLooping(!isLooping));
   }, [isLooping, dispatch]);
 
-
-
   const playNextTrack = useCallback(() => {
-    if (playlist.length === 0 || !currentTrack) return;
+    if (currentPlaylist.length === 0 || !currentTrack) return;
 
-    const currentIndex = playlist.findIndex(track => track._id === currentTrack?._id);
+    const currentIndex = currentPlaylist.findIndex(track => track._id === currentTrack?._id);
     let nextIndex = isShuffling
-      ? Math.floor(Math.random() * playlist.length)
+      ? Math.floor(Math.random() * currentPlaylist.length)
       : currentIndex + 1;
 
-    if (nextIndex >= playlist.length) return;
+    if (nextIndex >= currentPlaylist.length) {
+      audio?.pause();
+      dispatch(setIsPlaying(false));
+      return;
+    };
 
-    const nextTrack = playlist[nextIndex];
-    // Здесь вызов handlePlay
+    const nextTrack = currentPlaylist[nextIndex];
     if (currentTrack?._id !== nextTrack._id) {
       dispatch(setCurrentTrack(nextTrack));
-      handlePlay(nextTrack, playlist);
+      handlePlay(nextTrack, currentPlaylist);
     }
-  }, [playlist, currentTrack, isShuffling, handlePlay]);
+  }, [currentPlaylist, currentTrack, isShuffling, handlePlay]);
 
   const handleTrackEnd = useCallback(() => {
     setTimeout(() => {
@@ -141,18 +145,20 @@ export const useAudioPlayer = () => {
 
 
   const playPreviousTrack = useCallback(() => {
-    if (playlist.length === 0 || !currentTrack) return;
+    if (currentPlaylist.length === 0 || !currentTrack) return;
 
-    const currentIndex = playlist.findIndex(track => track._id === currentTrack._id);
+    const currentIndex = currentPlaylist.findIndex(track => track._id === currentTrack._id);
     let previousIndex = isShuffling
-      ? Math.floor(Math.random() * playlist.length)
+      ? Math.floor(Math.random() * currentPlaylist.length)
       : currentIndex - 1;
     if (previousIndex < 0) {
+      audio?.pause();
+      dispatch(setIsPlaying(false));
       return;
-    }
-    const previousTrack = playlist[previousIndex];
-    handlePlay(previousTrack, playlist);
-  }, [playlist, currentTrack, isShuffling, handlePlay]);
+    };
+    const previousTrack = currentPlaylist[previousIndex];
+    handlePlay(previousTrack, currentPlaylist);
+  }, [currentPlaylist, currentTrack, isShuffling, handlePlay]);
 
   useEffect(() => {
     if (!audio) return;

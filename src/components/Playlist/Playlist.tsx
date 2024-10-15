@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { useParams, usePathname } from 'next/navigation';
 import Track from '@/components/Track/Track';
@@ -11,6 +11,7 @@ import PlaylistTitle from '../PlaylistTitle/PlaylistTitle';
 import { Track as TrackType } from '@/hooks/useFetchTracks';
 import { getSelectionById } from '@/api/api';
 import Skeleton from '../Skeleton/Skeleton';
+import { setIsLoading } from '@/store/features/audioPlayerSlice';
 
 interface PlaylistProps {
   customTracks?: TrackType[];
@@ -22,9 +23,11 @@ const Playlist: React.FC = () => {
   const pathname = usePathname();
   const [displayedTracks, setDisplayedTracks] = useState<TrackType[]>([]);
   const params = useParams();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchTracks = async () => {
+      dispatch(setIsLoading(true));
       let tracks: TrackType[] = [];
       switch (true) {
         case pathname === '/my-playlist':
@@ -41,6 +44,7 @@ const Playlist: React.FC = () => {
       }
 
       setDisplayedTracks(tracks);
+      dispatch(setIsLoading(false));
     };
 
     fetchTracks();
@@ -55,9 +59,9 @@ const Playlist: React.FC = () => {
     );
   }
 
-  if (displayedTracks.length === 0) {
-    return <p>No tracks available</p>;
-  }
+  // if (displayedTracks.length === 0) {
+  //   return <p>No tracks available</p>;
+  // }
 
   return (
     <div className={styles.playlist}>

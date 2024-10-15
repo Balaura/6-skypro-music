@@ -5,7 +5,7 @@ const Search = () => {
   return (
     <div className={styles.search}>
       <svg className={styles.svg}>
-        <use xlinkHref="img/icon/sprite.svg#icon-search"></use>
+        <use xlinkHref="/img/icon/sprite.svg#icon-search"></use>
       </svg>
       <input
         className={styles.text}

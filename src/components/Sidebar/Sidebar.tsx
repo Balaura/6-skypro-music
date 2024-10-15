@@ -54,7 +54,7 @@ const Sidebar = () => {
         <p className={styles.personalName}>{username || 'Гость'}</p>
         <div className={styles.icon} onClick={handleLogout}>
           <svg>
-            <use xlinkHref="img/icon/sprite.svg#logout"></use>
+            <use xlinkHref="/img/icon/sprite.svg#logout"></use>
           </svg>
         </div>
       </div>

@@ -17,7 +17,7 @@ const Volume: React.FC = () => {
       <div className={styles.content}>
         <div className={styles.image}>
           <svg className={styles.svg}>
-            <use xlinkHref="img/icon/sprite.svg#icon-volume"></use>
+            <use xlinkHref="/img/icon/sprite.svg#icon-volume"></use>
           </svg>
         </div>
         <div className={`${styles.progress} ${styles._btn}`}>

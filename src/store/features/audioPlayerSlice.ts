@@ -5,6 +5,7 @@ export interface AudioPlayerState {
   isPlaying: boolean;
   currentTrack: Track | null;
   playlist: Track[];
+  currentPlaylist: Track[];
   isShuffling: boolean;
   isLooping: boolean;
   volume: number;
@@ -18,6 +19,7 @@ export const initialState: AudioPlayerState = {
   isPlaying: false,
   currentTrack: null,
   playlist: [],
+  currentPlaylist: [],
   isShuffling: false,
   isLooping: false,
   volume: 0.5,
@@ -39,6 +41,9 @@ const audioPlayerSlice = createSlice({
     },
     setPlaylist: (state, action: PayloadAction<Track[]>) => {
       state.playlist = action.payload;
+    },
+    setCurrentPlaylist: (state, action: PayloadAction<Track[]>) => {
+      state.currentPlaylist = action.payload;
     },
     setIsShuffling: (state, action: PayloadAction<boolean>) => {
       state.isShuffling = action.payload;
@@ -82,6 +87,7 @@ export const {
   setIsPlaying,
   setCurrentTrack,
   setPlaylist,
+  setCurrentPlaylist,
   setIsShuffling,
   setIsLooping,
   setVolume,

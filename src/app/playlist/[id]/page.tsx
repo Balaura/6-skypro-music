@@ -24,7 +24,6 @@ export default function PlaylistPage() {
       setIsLoading(true);
       try {
         const data = await getSelectionById(Number(id));
-        console.log('data', data);
         setSelection(data.data);
       } catch (err) {
         setError('Ошибка при загрузке подборки');
