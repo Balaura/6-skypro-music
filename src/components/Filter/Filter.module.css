@@ -71,7 +71,8 @@
   scrollbar-color: #FFFFFF #4B4949;
 }
 /* // полоса прокрутки стили !!! */
-/* .dropdownContent::-webkit-scrollbar {
+
+.dropdownContent::-webkit-scrollbar {
   width: 2px;
 } 
 
@@ -88,7 +89,7 @@
 
  .dropdownContent::-webkit-scrollbar-button {
   display: none;
-} */
+}
 
 .dropdownItem {
   font-family: 'StratosSkyeng', sans-serif;
@@ -104,4 +105,67 @@
 .dropdownItem:hover {
   color: #B672FF;
   text-decoration-line: underline;
+}
+
+.badgeCount {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 26px;
+  height: 25.5px;
+  background-color: #B672FF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.dropdown {
+  background-color: #313131;
+  border-radius: 8px;
+  padding: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  z-index: 10;
+  display: none;
+}
+
+.button.active .dropdown {
+  display: block;
+}
+
+.dropdown_performer,
+.dropdown_year,
+.dropdown_genre {
+  width: 200px;
+}
+
+.item {
+  font-size: 14px;
+  color: #ffffff;
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+.item:hover {
+  color: #B672FF;
+  text-decoration: underline;
+}
+
+.item.active,
+.button:hover,
+.button:active,
+.button.active {
+  border-color: #B672FF;
+  color: #B672FF;
+}
+
+.dropdown.active {
+  display: block;
 }

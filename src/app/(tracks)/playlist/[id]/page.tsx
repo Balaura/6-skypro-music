@@ -38,11 +38,6 @@ export default function PlaylistPage() {
     }
   }, [id]);
 
-
-  // if (isLoading) {
-  //   return <div>Загрузка...</div>;
-  // }
-
   if (error) {
     return <div>Ошибка: {error}</div>;
   }

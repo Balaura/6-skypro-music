@@ -39,6 +39,7 @@ const Filter: React.FC = () => {
               className={`${styles.button} ${activeFilter === filter ? styles.active : ''}`}
               onClick={() => toggleFilter(filter)}
             >
+              {/* <div className={styles.badgeCount}>{activeAuthors.length}</div>  пример того, как применять стиль этого счетчика */}
               {filter === 'artist' ? 'исполнителю' : filter === 'year' ? 'году выпуска' : 'жанру'}
             </button>
             {activeFilter === filter && (
