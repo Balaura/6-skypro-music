@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { loginUser, getToken } from '../../api/api'
+import { loginUser, getToken } from '../../../api/api'
 import styles from './signin.module.css'
 import { useDispatch } from 'react-redux'
 import Image from 'next/image'
