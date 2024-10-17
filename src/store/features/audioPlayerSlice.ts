@@ -13,7 +13,6 @@ export interface AudioPlayerState {
   duration: number;
   favoriteTracks: number[];
   isLoading: boolean;
-  // Новые поля
   searchKeyword: string;
   selectedArtists: string[];
   selectedGenres: string[];
@@ -33,7 +32,6 @@ export const initialState: AudioPlayerState = {
   duration: 0,
   favoriteTracks: [],
   isLoading: true,
-  // Инициализация новых полей
   searchKeyword: '',
   selectedArtists: [],
   selectedGenres: [],
@@ -45,7 +43,7 @@ const audioPlayerSlice = createSlice({
   name: 'audioPlayer',
   initialState,
   reducers: {
-    // Существующие редьюсеры
+
     setIsPlaying: (state, action: PayloadAction<boolean>) => {
       state.isPlaying = action.payload;
     },
@@ -93,7 +91,7 @@ const audioPlayerSlice = createSlice({
     clearFavoriteTracks: (state) => {
       state.favoriteTracks = [];
     },
-    // Новые редьюсеры
+
     setSearchKeyword: (state, action: PayloadAction<string>) => {
       state.searchKeyword = action.payload;
     },
@@ -128,7 +126,6 @@ export const {
   setFavoriteTracks,
   setIsLoading,
   clearFavoriteTracks,
-  // Экспорт новых действий
   setSearchKeyword,
   setSelectedArtists,
   setSelectedGenres,

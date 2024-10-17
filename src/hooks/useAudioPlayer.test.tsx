@@ -55,7 +55,6 @@ describe('useAudioPlayer', () => {
       handlePlayFunction(newTrack, [newTrack]);
     });
 
-    // Добавьте небольшую задержку, чтобы дать время для обновления состояния
     await new Promise(resolve => setTimeout(resolve, 0));
 
     const state = store.getState().audioPlayer;
