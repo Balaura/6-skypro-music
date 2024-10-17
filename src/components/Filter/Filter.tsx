@@ -21,7 +21,7 @@ const Filter: React.FC = () => {
     playlist
   } = useSelector((state: RootState) => state.audioPlayer);
 
-  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
   const filterOptions = useMemo(() => ({
     artists: [...new Set(playlist.map(track => track.author))],
@@ -30,9 +30,7 @@ const Filter: React.FC = () => {
   }), [playlist]);
 
   const toggleFilter = (filter: string) => {
-    setActiveFilters(prev =>
-      prev.includes(filter) ? prev.filter(f => f !== filter) : [...prev, filter]
-    );
+    setActiveFilter(prevFilter => prevFilter === filter ? null : filter);
   };
 
   const handleFilterToggle = (filter: string, item: string) => {
@@ -80,7 +78,7 @@ const Filter: React.FC = () => {
         {['artist', 'genre', 'year'].map((filter) => (
           <div key={filter} className={styles.filterItem}>
             <button
-              className={`${styles.button} ${activeFilters.includes(filter) ? styles.active : ''}`}
+              className={`${styles.button} ${activeFilter === filter ? styles.active : ''}`}
               onClick={() => toggleFilter(filter)}
               aria-label={`Фильтр по ${filter === 'artist' ? 'исполнителю' : filter === 'genre' ? 'жанру' : 'году выпуска'}`}
             >
@@ -88,14 +86,14 @@ const Filter: React.FC = () => {
               {(filter === 'artist' && selectedArtists.length > 0) && (
                 <div className={styles.badgeCount}>{selectedArtists.length}</div>
               )}
-              {(filter === 'genre' && selectedGenres.length > 0) && (
-                <div className={styles.badgeCount}>{selectedGenres.length}</div>
-              )}
               {(filter === 'year' && selectedYear) && (
                 <div className={styles.badgeCount}>1</div>
               )}
+                            {(filter === 'genre' && selectedGenres.length > 0) && (
+                <div className={styles.badgeCount}>{selectedGenres.length}</div>
+              )}
             </button>
-            {activeFilters.includes(filter) && (
+            {activeFilter === filter && (
               <div className={styles.dropdown}>
                 <div className={styles.dropdownContent}>
                   {filterOptions[filter === 'artist' ? 'artists' : filter === 'genre' ? 'genres' : 'years'].map((item, index) => (
