@@ -1,11 +1,23 @@
 .nav {
-  width: 244px;
+  width: 200px;
   background-color: #181818;
   padding: 20px 0 20px 36px;
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
+}
+
+.menu {
+  /* display: block;
+  visibility: visible; */
+  display: none;
+  visibility: hidden;
+}
+
+.menuopen {
+  display: block;
+  visibility: visible;
 }
 
 .logo {
@@ -36,11 +48,6 @@
   width: 100%;
   height: 1px;
   background-color: #d3d3d3;
-}
-
-.menu {
-  display: block;
-  visibility: visible;
 }
 
 .menuList {

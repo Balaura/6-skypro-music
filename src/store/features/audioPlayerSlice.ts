@@ -1,26 +1,32 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Track } from '@/hooks/useFetchTracks';
 
-interface AudioPlayerState {
+export interface AudioPlayerState {
   isPlaying: boolean;
   currentTrack: Track | null;
   playlist: Track[];
+  currentPlaylist: Track[];
   isShuffling: boolean;
   isLooping: boolean;
   volume: number;
   currentTime: number;
   duration: number;
+  favoriteTracks: number[];
+  isLoading: boolean;
 }
 
-const initialState: AudioPlayerState = {
+export const initialState: AudioPlayerState = {
   isPlaying: false,
   currentTrack: null,
   playlist: [],
+  currentPlaylist: [],
   isShuffling: false,
   isLooping: false,
   volume: 0.5,
   currentTime: 0,
   duration: 0,
+  favoriteTracks: [],
+  isLoading: true,
 };
 
 const audioPlayerSlice = createSlice({
@@ -35,6 +41,9 @@ const audioPlayerSlice = createSlice({
     },
     setPlaylist: (state, action: PayloadAction<Track[]>) => {
       state.playlist = action.payload;
+    },
+    setCurrentPlaylist: (state, action: PayloadAction<Track[]>) => {
+      state.currentPlaylist = action.payload;
     },
     setIsShuffling: (state, action: PayloadAction<boolean>) => {
       state.isShuffling = action.payload;
@@ -54,6 +63,23 @@ const audioPlayerSlice = createSlice({
     initializePlaylist: (state, action: PayloadAction<Track[]>) => {
       state.playlist = action.payload;
     },
+    addToFavorites: (state, action: PayloadAction<number>) => {
+      if (!state.favoriteTracks.includes(action.payload)) {
+        state.favoriteTracks.push(action.payload);
+      }
+    },
+    removeFromFavorites: (state, action: PayloadAction<number>) => {
+      state.favoriteTracks = state.favoriteTracks.filter(id => id !== action.payload);
+    },
+    setFavoriteTracks: (state, action: PayloadAction<number[]>) => {
+      state.favoriteTracks = action.payload;
+    },
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
+    clearFavoriteTracks: (state) => {
+      state.favoriteTracks = [];
+    },
   },
 });
 
@@ -61,12 +87,18 @@ export const {
   setIsPlaying,
   setCurrentTrack,
   setPlaylist,
+  setCurrentPlaylist,
   setIsShuffling,
   setIsLooping,
   setVolume,
   setCurrentTime,
   setDuration,
   initializePlaylist,
+  addToFavorites,
+  removeFromFavorites,
+  setFavoriteTracks,
+  setIsLoading,
+  clearFavoriteTracks,
 } = audioPlayerSlice.actions;
 
 export default audioPlayerSlice.reducer;

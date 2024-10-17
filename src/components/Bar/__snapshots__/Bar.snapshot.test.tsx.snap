@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Bar component renders correctly 1`] = `
+<div
+  className="bar"
+>
+  <div
+    className="content"
+  >
+    ProgressBar
+    <div
+      className="playerBlock"
+    >
+      <div
+        className="barPlayer"
+      >
+        <Player />
+        <TrackPlay
+          currentTrack={
+            {
+              "_id": 1,
+              "author": "Test Author",
+              "name": "Test Track",
+            }
+          }
+        />
+      </div>
+      <TimeTrack />
+      <Volume />
+    </div>
+  </div>
+</div>
+`;

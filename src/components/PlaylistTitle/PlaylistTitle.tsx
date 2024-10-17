@@ -9,7 +9,7 @@ const PlaylistTitle = () => {
       <div className={`${styles.col} ${styles.col03}`}>АЛЬБОМ</div>
       <div className={`${styles.col} ${styles.col04}`}>
         <svg className={styles.svg}>
-          <use xlinkHref="img/icon/sprite.svg#icon-watch"></use>
+          <use xlinkHref="/img/icon/sprite.svg#icon-watch"></use>
         </svg>
       </div>
     </div>

@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Track component renders correctly 1`] = `
+<div
+  className="item"
+>
+  <div
+    className="track"
+  >
+    <div
+      className="title"
+    >
+      <div
+        className="titleImage"
+        data-testid="play-button"
+        onClick={[Function]}
+      >
+        <svg
+          className="titleSvg"
+        >
+          <use
+            xlinkHref="/img/icon/sprite.svg#icon-note"
+          />
+        </svg>
+      </div>
+      <div
+        className="titleText"
+      >
+        <a
+          className="titleLink"
+          onClick={[Function]}
+        >
+          Test Track
+          <span
+            className="titleSpan"
+          />
+        </a>
+      </div>
+    </div>
+    <div
+      className="author"
+    >
+      <a
+        className="authorLink"
+        href="#"
+      >
+        Test Author
+      </a>
+    </div>
+    <div
+      className="album"
+    >
+      <a
+        className="albumLink"
+        href="#"
+      >
+        Test Album
+      </a>
+    </div>
+    <div
+      className="time"
+    >
+      <button
+        className="likeBtn "
+        disabled={false}
+        onClick={[Function]}
+      >
+        <svg
+          className="likeSvg"
+        >
+          <use
+            xlinkHref="/img/icon/sprite.svg#icon-like"
+          />
+        </svg>
+      </button>
+      <span
+        className="timeText"
+      >
+        3:00
+      </span>
+    </div>
+  </div>
+</div>
+`;
