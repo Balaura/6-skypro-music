@@ -1,5 +1,3 @@
-// src/store/features/authSlice.ts
-
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { TokenResponse, loginUser, refreshToken, registerUser } from '../../api/api'
 import { clearFavoriteTracks } from './audioPlayerSlice'

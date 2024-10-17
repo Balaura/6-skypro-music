@@ -13,10 +13,6 @@ export interface Track {
   album: string;
   track_file: string;
 }
-// interface ApiResponse {
-//   success: boolean;
-//   data: Track[];
-// }
 
 const useFetchTracks = () => {
   const [error, setError] = useState<string | null>(null);

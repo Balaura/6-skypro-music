@@ -1,36 +1,129 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Skypro Music
 
-## Getting Started
+Skypro Music - это современное веб-приложение для стриминга музыки, разработанное с использованием Next.js, React и Redux. Приложение предоставляет пользователям возможность слушать музыку, создавать плейлисты и управлять своей музыкальной коллекцией.
 
-First, run the development server:
+## Функциональность
+
+### Авторизация и регистрация
+- Регистрация новых пользователей (email, пароль, имя пользователя)
+- Авторизация существующих пользователей
+- Выход из аккаунта
+
+### Главная страница
+- Отображение списка всех доступных треков
+- Воспроизведение, пауза и переключение между треками
+- Фильтрация треков по исполнителю, жанру и году выпуска
+- Поиск треков по названию или исполнителю
+- Сортировка треков (по умолчанию, сначала новые, сначала старые)
+
+### Плеер
+- Отображение информации о текущем треке (название, исполнитель)
+- Управление воспроизведением (play/pause, следующий/предыдущий трек)
+- Регулировка громкости
+- Отображение и управление прогрессом воспроизведения
+- Режимы повтора и случайного воспроизведения
+
+### Избранное
+- Добавление треков в избранное и удаление из него
+- Отдельная страница для просмотра избранных треков
+
+### Плейлисты
+- Просмотр доступных плейлистов
+- Отображение содержимого каждого плейлиста
+
+### Адаптивный дизайн
+- Оптимизация интерфейса для различных устройств (десктоп, планшет, мобильные устройства)
+
+## Технические особенности
+
+- Next.js для серверного рендеринга и роутинга
+- Redux для управления состоянием приложения
+- TypeScript для статической типизации
+- Асинхронные запросы к API с обработкой ошибок
+- Кастомные хуки для управления аудиоплеером
+- Оптимизация производительности:
+  - Мемоизация для оптимизации рендеринга компонентов
+  - Виртуализация списков с использованием react-window
+  - Адаптивные размеры списков с помощью AutoSizer из react-virtualized
+- Базовый аудит производительности в режиме разработки
+- Расширенное тестирование компонентов и хуков
+
+## Установка и запуск проекта
+
+1. Клонируйте репозиторий:
+   ```bash
+   git clone [URL вашего репозитория]
+   cd skypro-music
+   ```
+
+2. Установите зависимости:
+   ```bash
+   npm install
+   ```
+
+3. Запустите проект в режиме разработки:
+   ```bash
+   npm run dev
+   ```
+
+4. Откройте [http://localhost:3000] в вашем браузере.
+
+## Тестирование
+
+Для запуска тестов используйте команду:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm test
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Оптимизация производительности
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+В проекте реализованы следующие методы оптимизации:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Виртуализация списка треков:
+   ```jsx
+   import { FixedSizeList as List } from 'react-window';
+   import AutoSizer from 'react-virtualized-auto-sizer';
 
-## Learn More
+   // В компоненте
+   <AutoSizer>
+     {({ height, width }) => (
+       <List
+         height={height}
+         itemCount={filteredAndSortedTracks.length}
+         itemSize={50}
+         width={width}
+       >
+         {Row}
+       </List>
+     )}
+   </AutoSizer>
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. Аудит производительности в режиме разработки:
+   ```jsx
+   useEffect(() => {
+     if (process.env.NODE_ENV === 'development') {
+       console.time('Playlist render');
+       return () => {
+         console.timeEnd('Playlist render');
+       };
+     }
+   }, [filteredAndSortedTracks]);
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Дополнительные библиотеки
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Для улучшения производительности и тестирования используются:
 
-## Deploy on Vercel
+- react-window: для эффективной рендеринга больших списков
+- react-virtualized-auto-sizer: для создания адаптивных виртуализированных списков
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Установка:
+```bash
+npm install react-window react-virtualized-auto-sizer
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Контакты
+
+Ссылка на проект: 

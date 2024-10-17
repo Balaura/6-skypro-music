@@ -13,7 +13,7 @@ const ClientLayout = ({ children }: { children: React.ReactNode }) => {
   }, [dispatch]);
 
   if (!isClient) {
-    return null; // или можно вернуть загрузочный индикатор
+    return null;
   }
 
   return <>{children}</>;

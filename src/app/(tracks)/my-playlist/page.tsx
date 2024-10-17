@@ -24,7 +24,7 @@ export default function MyPlaylist() {
   }
 
   if (!username) {
-    return null; // или можно вернуть компонент загрузки
+    return null;
   }
 
   return (

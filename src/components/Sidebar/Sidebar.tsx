@@ -62,7 +62,6 @@ const Sidebar = () => {
       <div className={styles.block}>
         <div className={styles.list}>
           {isLoading ? (
-            // <p>Загрузка подборок...</p>
             <Skeleton type="selection" count={3} />
           ) : error ? (
             <p>{error}</p>
