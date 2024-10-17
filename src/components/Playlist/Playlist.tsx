@@ -10,7 +10,10 @@ import { Track as TrackType } from '@/hooks/useFetchTracks';
 import { getSelectionById } from '@/api/api';
 import Skeleton from '../Skeleton/Skeleton';
 import { setIsLoading, setPlaylist } from '@/store/features/audioPlayerSlice';
-import Filter from '@/components/Filter/Filter';
+
+// Виртуализацию списка с react-window
+import { FixedSizeList as List } from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 const Playlist: React.FC = () => {
   const { handlePlay } = useAudioPlayer();
@@ -81,6 +84,16 @@ const Playlist: React.FC = () => {
       });
   }, [playlist, searchKeyword, selectedArtists, selectedGenres, selectedYear, sortOption]);
 
+  // Для проведения базового аудита
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.time('Playlist render');
+      return () => {
+        console.timeEnd('Playlist render');
+      };
+    }
+  }, [filteredAndSortedTracks]);
+
   if (isLoading) {
     return (
       <div className={styles.playlist}>
@@ -89,6 +102,22 @@ const Playlist: React.FC = () => {
       </div>
     );
   }
+
+// Виртуализацию списка с react-window
+const Row = ({ index, style }: { index: number; style: React.CSSProperties }) => {
+  const track = filteredAndSortedTracks[index];
+  return (
+    <div style={style}>
+      <Track
+        key={track._id}
+        {...track}
+        isPlaying={isPlaying && currentTrack?._id === track._id}
+        isCurrentTrack={currentTrack?._id === track._id}
+        onPlay={() => handlePlay(track, filteredAndSortedTracks)}
+      />
+    </div>
+  );
+};
 
   return (
     <div className={styles.playlist}>
@@ -109,5 +138,31 @@ const Playlist: React.FC = () => {
     </div>
   );
 };
+
+// Виртуализацию списка с react-window
+
+// return (
+//   <div className={styles.playlist}>
+//     <PlaylistTitle />
+//     {filteredAndSortedTracks.length === 0 ? (
+//       <p className={styles.noResults}>Треки не найдены</p>
+//     ) : (
+//       <AutoSizer>
+//         {({ height, width }) => (
+//           <List
+//             height={height}
+//             itemCount={filteredAndSortedTracks.length}
+//             itemSize={60} // Примерная высота одного трека
+//             width={width}
+//           >
+//             {Row}
+//           </List>
+//         )}
+//       </AutoSizer>
+//     )}
+//   </div>
+// );
+// };
+
 
 export default Playlist;

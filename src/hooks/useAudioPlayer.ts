@@ -6,7 +6,6 @@ import { RootState } from '@/store/store';
 import {
   setIsPlaying,
   setCurrentTrack,
-  setPlaylist,
   setCurrentPlaylist,
   setIsShuffling,
   setIsLooping,
@@ -38,7 +37,6 @@ export const useAudioPlayer = () => {
     const handleLoadedMetadata = () => setDuration(audio.duration);
     const handleTimeUpdate = () => dispatch(setCurrentTime(audio.currentTime));
     const handleEnded = () => {
-      // dispatch(setIsPlaying(false));
       handleTrackEnd();
     };
 
@@ -165,7 +163,6 @@ export const useAudioPlayer = () => {
     audio.volume = volume;
   }, [volume]);
 
-  // Sync audio.currentTime with Redux state
   useEffect(() => {
     if (!audio) return;
     if (Math.abs(audio.currentTime - currentTime) > 0.5) {
