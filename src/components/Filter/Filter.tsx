@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import {
-  setSearchKeyword,
   setSelectedArtists,
   setSelectedGenres,
   setSortOption
@@ -12,10 +11,8 @@ import styles from './Filter.module.css';
 const Filter: React.FC = () => {
   const dispatch = useDispatch();
   const {
-    searchKeyword,
     selectedArtists,
     selectedGenres,
-    selectedYear,
     sortOption,
     playlist
   } = useSelector((state: RootState) => state.audioPlayer);
@@ -75,14 +72,6 @@ const Filter: React.FC = () => {
 
   return (
     <div className={styles.filter}>
-      <input
-        type="text"
-        value={searchKeyword}
-        onChange={(e) => dispatch(setSearchKeyword(e.target.value))}
-        placeholder="Поиск по названию или исполнителю"
-        className={styles.searchInput}
-        aria-label="Поиск по названию или исполнителю"
-      />
       <div className={styles.title}>Искать по:</div>
       <div className={styles.filterButtons}>
         {['artist', 'genre', 'year'].map((filter) => (
