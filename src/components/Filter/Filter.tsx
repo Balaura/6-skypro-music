@@ -5,7 +5,6 @@ import {
   setSearchKeyword,
   setSelectedArtists,
   setSelectedGenres,
-  setSelectedYear,
   setSortOption
 } from '@/store/features/audioPlayerSlice';
 import styles from './Filter.module.css';
@@ -26,7 +25,7 @@ const Filter: React.FC = () => {
   const filterOptions = useMemo(() => ({
     artists: [...new Set(playlist.map(track => track.author))],
     genres: [...new Set(playlist.flatMap(track => track.genre))],
-    years: [...new Set(playlist.map(track => new Date(track.release_date).getFullYear().toString()))]
+    years: ['По умолчанию', 'Сначала новые', 'Сначала старые']
   }), [playlist]);
 
   const toggleFilter = (filter: string) => {
@@ -41,10 +40,6 @@ const Filter: React.FC = () => {
             ? selectedArtists.filter(a => a !== item)
             : [...selectedArtists, item]
         ));
-        console.log(selectedArtists);
-        console.log(item);
-        console.log(filterOptions);
-        console.log(selectedArtists.includes(item));
         break;
       case 'genre':
         dispatch(setSelectedGenres(
@@ -52,14 +47,29 @@ const Filter: React.FC = () => {
             ? selectedGenres.filter(g => g !== item)
             : [...selectedGenres, item]
         ));
-        console.log(selectedGenres);
-        console.log(item);
-        console.log(filterOptions);
-        console.log(selectedGenres.includes(item));
         break;
       case 'year':
-        dispatch(setSelectedYear(selectedYear === item ? null : item));
+        const sortOptionValue = item === 'Сначала новые' ? 'new' : item === 'Сначала старые' ? 'old' : 'default';
+        dispatch(setSortOption(sortOptionValue));
+        setActiveFilter(null);
         break;
+    }
+  };
+
+  const isItemSelected = (filter: string, item: string) => {
+    switch (filter) {
+      case 'artist':
+        return selectedArtists.includes(item);
+      case 'genre':
+        return selectedGenres.includes(item);
+      case 'year':
+        return (
+          (item === 'По умолчанию' && sortOption === 'default') ||
+          (item === 'Сначала новые' && sortOption === 'new') ||
+          (item === 'Сначала старые' && sortOption === 'old')
+        );
+      default:
+        return false;
     }
   };
 
@@ -86,11 +96,11 @@ const Filter: React.FC = () => {
               {(filter === 'artist' && selectedArtists.length > 0) && (
                 <div className={styles.badgeCount}>{selectedArtists.length}</div>
               )}
-              {(filter === 'year' && selectedYear) && (
-                <div className={styles.badgeCount}>1</div>
-              )}
-                            {(filter === 'genre' && selectedGenres.length > 0) && (
+              {(filter === 'genre' && selectedGenres.length > 0) && (
                 <div className={styles.badgeCount}>{selectedGenres.length}</div>
+              )}
+              {(filter === 'year' && sortOption !== 'default') && (
+                <div className={styles.badgeCount}>1</div>
               )}
             </button>
             {activeFilter === filter && (
@@ -99,10 +109,7 @@ const Filter: React.FC = () => {
                   {filterOptions[filter === 'artist' ? 'artists' : filter === 'genre' ? 'genres' : 'years'].map((item, index) => (
                     <div
                       key={index}
-                      className={`${styles.dropdownItem} ${(filter === 'artist' && selectedArtists.includes(item)) ||
-                        (filter === 'genre' && selectedGenres.includes(item)) ||
-                        (filter === 'year' && selectedYear === item) ? styles.selected : ''
-                        }`}
+                      className={`${styles.dropdownItem} ${isItemSelected(filter, item) ? styles.selected : ''}`}
                       onClick={() => handleFilterToggle(filter, item)}
                     >
                       {item}
@@ -113,29 +120,6 @@ const Filter: React.FC = () => {
             )}
           </div>
         ))}
-      </div>
-      <div className={styles.sortOptions}>
-        <button
-          className={`${styles.sortButton} ${sortOption === 'default' ? styles.active : ''}`}
-          onClick={() => dispatch(setSortOption('default'))}
-          aria-label="Сортировка по умолчанию"
-        >
-          По умолчанию
-        </button>
-        <button
-          className={`${styles.sortButton} ${sortOption === 'new' ? styles.active : ''}`}
-          onClick={() => dispatch(setSortOption('new'))}
-          aria-label="Сортировка: сначала новые"
-        >
-          Сначала новые
-        </button>
-        <button
-          className={`${styles.sortButton} ${sortOption === 'old' ? styles.active : ''}`}
-          onClick={() => dispatch(setSortOption('old'))}
-          aria-label="Сортировка: сначала старые"
-        >
-          Сначала старые
-        </button>
       </div>
     </div>
   );
