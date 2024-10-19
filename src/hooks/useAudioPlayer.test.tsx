@@ -18,7 +18,7 @@ jest.mock('@/utils/audioPlayer', () => ({
   })),
 }));
 
-const TestComponent: React.FC<{ onRender: (handlePlay: any) => void }> = ({ onRender }) => {
+const TestComponent: React.FC<{ onRender: (handlePlay: (track: Track, newPlaylist: Track[]) => void) => void }> = ({ onRender }) => {
   const { handlePlay } = useAudioPlayer();
   React.useEffect(() => {
     onRender(handlePlay);
@@ -29,7 +29,7 @@ const TestComponent: React.FC<{ onRender: (handlePlay: any) => void }> = ({ onRe
 describe('useAudioPlayer', () => {
   it('handlePlay starts playing a new track', async () => {
     const store = createTestStore();
-    let handlePlayFunction: any;
+    let handlePlayFunction: (track: Track, newPlaylist: Track[]) => void;
 
     await act(async () => {
       render(
@@ -58,6 +58,7 @@ describe('useAudioPlayer', () => {
     await new Promise(resolve => setTimeout(resolve, 0));
 
     const state = store.getState().audioPlayer;
+
     expect(state.currentTrack).toEqual(expect.objectContaining({
       _id: 1,
       name: 'Test Track',

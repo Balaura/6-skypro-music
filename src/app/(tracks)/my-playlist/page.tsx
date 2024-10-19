@@ -10,7 +10,6 @@ import { useRouter } from 'next/navigation';
 export default function MyPlaylist() {
   const username = useSelector((state: RootState) => state.auth.username);
   const { error } = useFetchTracks();
-  const isLoading = useSelector((state: RootState) => state.audioPlayer.isLoading);
   const router = useRouter();
 
   useEffect(() => {

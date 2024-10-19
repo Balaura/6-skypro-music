@@ -14,7 +14,6 @@ const Filter: React.FC = () => {
     selectedArtists,
     selectedGenres,
     sortOption,
-    playlist,
     currentPlaylist,
   } = useSelector((state: RootState) => state.audioPlayer);
 
@@ -46,11 +45,12 @@ const Filter: React.FC = () => {
             : [...selectedGenres, item]
         ));
         break;
-      case 'year':
+      case 'year': {
         const sortOptionValue = item === 'Сначала новые' ? 'new' : item === 'Сначала старые' ? 'old' : 'default';
         dispatch(setSortOption(sortOptionValue));
         setActiveFilter(null);
         break;
+      }
     }
   };
 

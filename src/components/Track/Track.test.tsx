@@ -5,7 +5,7 @@ import { createTestStore, RootState } from '../../utils/testUtils';
 import Track from '@/components/Track/Track';
 import { Track as TrackType } from '@/hooks/useFetchTracks';
 import '@testing-library/jest-dom';
-import { AudioPlayerState, initialState as audioPlayerInitialState } from '@/store/features/audioPlayerSlice';
+import { initialState as audioPlayerInitialState } from '@/store/features/audioPlayerSlice';
 
 jest.mock('../../api/api', () => ({
   ...jest.requireActual('../../api/api'),

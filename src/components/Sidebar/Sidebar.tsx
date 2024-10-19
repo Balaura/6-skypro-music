@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './Sidebar.module.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '@/store/store';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { logout } from '@/store/features/authSlice';
 import { clearFavoriteTracks } from '@/store/features/audioPlayerSlice';
@@ -19,7 +18,6 @@ const Sidebar = () => {
   const [selections, setSelections] = useState<Selection[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const username = useSelector((state: RootState) => state.auth.username);
   const router = useRouter();
   const dispatch = useDispatch();
 

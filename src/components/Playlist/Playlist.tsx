@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { useParams, usePathname } from 'next/navigation';
@@ -9,7 +9,7 @@ import PlaylistTitle from '../PlaylistTitle/PlaylistTitle';
 import { Track as TrackType } from '@/hooks/useFetchTracks';
 import { getSelectionById } from '@/api/api';
 import Skeleton from '../Skeleton/Skeleton';
-import { setIsLoading, setPlaylist, setCurrentPlaylist } from '@/store/features/audioPlayerSlice';
+import { setIsLoading, setCurrentPlaylist } from '@/store/features/audioPlayerSlice';
 
 // Виртуализацию списка с react-window
 // import { FixedSizeList as List } from 'react-window';

@@ -44,8 +44,9 @@ const SignUp = () => {
 					if (parsedError && typeof parsedError === 'object') {
 						errorMsg = Object.values(parsedError).flat().join(' ')
 					}
-				} catch (parseError) {}
-				setError('Ошибка регистрации: ' + errorMsg)
+				} catch {
+					setError('Ошибка регистрации: ' + errorMsg)
+				}
 			} else {
 				setError('Ошибка регистрации: Попробуйте снова позже')
 			}

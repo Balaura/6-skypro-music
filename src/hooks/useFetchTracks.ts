@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { initializePlaylist, setFavoriteTracks, setIsLoading } from '@/store/features/audioPlayerSlice';
 import { getAllFavoriteTracks, getAllTracks } from '@/api/api';
 export interface Track {
-  artist: any;
+  artist: string;
   _id: number;
   name: string;
   author: string;
