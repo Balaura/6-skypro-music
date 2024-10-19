@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { useParams, usePathname } from 'next/navigation';
@@ -9,11 +9,11 @@ import PlaylistTitle from '../PlaylistTitle/PlaylistTitle';
 import { Track as TrackType } from '@/hooks/useFetchTracks';
 import { getSelectionById } from '@/api/api';
 import Skeleton from '../Skeleton/Skeleton';
-import { setIsLoading, setPlaylist } from '@/store/features/audioPlayerSlice';
+import { setIsLoading, setPlaylist, setCurrentPlaylist } from '@/store/features/audioPlayerSlice';
 
 // Виртуализацию списка с react-window
-import { FixedSizeList as List } from 'react-window';
-import AutoSizer from 'react-virtualized-auto-sizer';
+// import { FixedSizeList as List } from 'react-window';
+// import AutoSizer from 'react-virtualized-auto-sizer';
 
 const Playlist: React.FC = () => {
   const { handlePlay } = useAudioPlayer();
@@ -21,6 +21,7 @@ const Playlist: React.FC = () => {
     isPlaying,
     currentTrack,
     playlist,
+    currentPlaylist,
     favoriteTracks,
     isLoading,
     searchKeyword,
@@ -32,6 +33,7 @@ const Playlist: React.FC = () => {
   const pathname = usePathname();
   const params = useParams();
   const dispatch = useDispatch();
+  // const [displayedTracks, setDisplayedTracks] = useState<TrackType[]>([]);
 
   useEffect(() => {
     const fetchTracks = async () => {
@@ -48,7 +50,8 @@ const Playlist: React.FC = () => {
         } else {
           tracks = playlist;
         }
-        dispatch(setPlaylist(tracks));
+        dispatch(setCurrentPlaylist(tracks));
+        // setDisplayedTracks(tracks);
       } catch (error) {
         console.error('Error fetching tracks:', error);
       } finally {
@@ -60,7 +63,7 @@ const Playlist: React.FC = () => {
   }, [pathname, params, playlist, favoriteTracks, dispatch]);
 
   const filteredAndSortedTracks = useMemo(() => {
-    return playlist
+    return currentPlaylist
       .filter((track): track is TrackType => track !== undefined && track !== null)
       .filter(track => {
         const keywordMatch = (track.name.toLowerCase().includes(searchKeyword.toLowerCase())) ||
@@ -82,17 +85,17 @@ const Playlist: React.FC = () => {
         }
         return 0;
       });
-  }, [playlist, searchKeyword, selectedArtists, selectedGenres, selectedYear, sortOption]);
+  }, [currentPlaylist, searchKeyword, selectedArtists, selectedGenres, selectedYear, sortOption]);
 
   // Для проведения базового аудита
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      console.time('Playlist render');
-      return () => {
-        console.timeEnd('Playlist render');
-      };
-    }
-  }, [filteredAndSortedTracks]);
+  // useEffect(() => {
+  //   if (process.env.NODE_ENV === 'development') {
+  //     console.time('Playlist render');
+  //     return () => {
+  //       console.timeEnd('Playlist render');
+  //     };
+  //   }
+  // }, [filteredAndSortedTracks]);
 
   if (isLoading) {
     return (
@@ -103,21 +106,21 @@ const Playlist: React.FC = () => {
     );
   }
 
-// Виртуализацию списка с react-window
-const Row = ({ index, style }: { index: number; style: React.CSSProperties }) => {
-  const track = filteredAndSortedTracks[index];
-  return (
-    <div style={style}>
-      <Track
-        key={track._id}
-        {...track}
-        isPlaying={isPlaying && currentTrack?._id === track._id}
-        isCurrentTrack={currentTrack?._id === track._id}
-        onPlay={() => handlePlay(track, filteredAndSortedTracks)}
-      />
-    </div>
-  );
-};
+  // // Виртуализацию списка с react-window
+  // const Row = ({ index, style }: { index: number; style: React.CSSProperties }) => {
+  //   const track = filteredAndSortedTracks[index];
+  //   return (
+  //     <div style={style}>
+  //       <Track
+  //         key={track._id}
+  //         {...track}
+  //         isPlaying={isPlaying && currentTrack?._id === track._id}
+  //         isCurrentTrack={currentTrack?._id === track._id}
+  //         onPlay={() => handlePlay(track, filteredAndSortedTracks)}
+  //       />
+  //     </div>
+  //   );
+  // };
 
   return (
     <div className={styles.playlist}>

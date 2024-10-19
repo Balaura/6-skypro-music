@@ -14,16 +14,17 @@ const Filter: React.FC = () => {
     selectedArtists,
     selectedGenres,
     sortOption,
-    playlist
+    playlist,
+    currentPlaylist,
   } = useSelector((state: RootState) => state.audioPlayer);
 
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
   const filterOptions = useMemo(() => ({
-    artists: [...new Set(playlist.map(track => track.author))],
-    genres: [...new Set(playlist.flatMap(track => track.genre))],
+    artists: [...new Set(currentPlaylist.map(track => track.author))],
+    genres: [...new Set(currentPlaylist.flatMap(track => track.genre))],
     years: ['По умолчанию', 'Сначала новые', 'Сначала старые']
-  }), [playlist]);
+  }), [currentPlaylist]);
 
   const toggleFilter = (filter: string) => {
     setActiveFilter(prevFilter => prevFilter === filter ? null : filter);
