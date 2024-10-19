@@ -1,27 +1,44 @@
 import React from 'react';
 import { render, act } from '@testing-library/react';
 import { useAudioPlayer } from './useAudioPlayer';
-import { Track } from '@/hooks/useFetchTracks';
 import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
-
-const mockStore = configureStore([]);
+import { createTestStore } from '../utils/testUtils';
+import '@testing-library/jest-dom';
+import { Track } from '@/hooks/useFetchTracks';
 
 jest.mock('@/utils/audioPlayer', () => ({
   getAudioElement: jest.fn(() => ({
-    play: jest.fn(),
+    play: jest.fn().mockResolvedValue(undefined),
     pause: jest.fn(),
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
     volume: 0.5,
+    currentTime: 0,
+    duration: 180,
   })),
 }));
 
-// Создаем тестовый компонент, который использует хук
-const TestComponent: React.FC = () => {
+const TestComponent: React.FC<{ onRender: (handlePlay: (track: Track, newPlaylist: Track[]) => void) => void }> = ({ onRender }) => {
   const { handlePlay } = useAudioPlayer();
-  
   React.useEffect(() => {
+    onRender(handlePlay);
+  }, [handlePlay, onRender]);
+  return null;
+};
+
+describe('useAudioPlayer', () => {
+  it('handlePlay starts playing a new track', async () => {
+    const store = createTestStore();
+    let handlePlayFunction: (track: Track, newPlaylist: Track[]) => void;
+
+    await act(async () => {
+      render(
+        <Provider store={store}>
+          <TestComponent onRender={(handlePlay) => { handlePlayFunction = handlePlay; }} />
+        </Provider>
+      );
+    });
+
     const newTrack: Track = {
       _id: 1,
       name: 'Test Track',
@@ -31,48 +48,21 @@ const TestComponent: React.FC = () => {
       duration_in_seconds: 180,
       album: 'Test Album',
       track_file: 'test.mp3',
-      artist: 'Test Artist'
+      artist: 'Test Artist',
     };
-    const newPlaylist = [newTrack];
-    handlePlay(newTrack, newPlaylist);
-  }, []);
 
-  return null;
-};
-
-describe('useAudioPlayer hook', () => {
-  let store: any;
-
-  beforeEach(() => {
-    store = mockStore({
-      audioPlayer: {
-        isPlaying: false,
-        currentTrack: null,
-        playlist: [],
-        volume: 0.5,
-      }
-    });
-  });
-
-  it('handlePlay starts playing a new track', async () => {
     await act(async () => {
-      render(
-        <Provider store={store}>
-          <TestComponent />
-        </Provider>
-      );
+      handlePlayFunction(newTrack, [newTrack]);
     });
 
-    const actions = store.getActions();
-    
-    expect(actions).toContainEqual(expect.objectContaining({
-      type: 'audioPlayer/setCurrentTrack',
-      payload: expect.any(Object),
-    }));
+    await new Promise(resolve => setTimeout(resolve, 0));
 
-    expect(actions).toContainEqual(expect.objectContaining({
-      type: 'audioPlayer/setIsPlaying',
-      payload: true,
+    const state = store.getState().audioPlayer;
+
+    expect(state.currentTrack).toEqual(expect.objectContaining({
+      _id: 1,
+      name: 'Test Track',
     }));
+    expect(state.isPlaying).toBe(true);
   });
 });

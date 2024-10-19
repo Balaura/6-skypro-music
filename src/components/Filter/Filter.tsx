@@ -1,51 +1,128 @@
-"use client";
-
-import React, { useState, useEffect } from 'react';
-import styles from './Filter.module.css';
-import { useSelector } from 'react-redux';
+import React, { useState, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
+import {
+  setSelectedArtists,
+  setSelectedGenres,
+  setSortOption
+} from '@/store/features/audioPlayerSlice';
+import styles from './Filter.module.css';
 
 const Filter: React.FC = () => {
+  const dispatch = useDispatch();
+  const {
+    selectedArtists,
+    selectedGenres,
+    sortOption,
+    currentPlaylist,
+  } = useSelector((state: RootState) => state.audioPlayer);
+
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
-  const [artists, setArtists] = useState<string[]>([]);
-  const [genres, setGenres] = useState<string[]>([]);
-  const [years, setYears] = useState<string[]>([]);
 
-  const { playlist } = useSelector((state: RootState) => state.audioPlayer);
+  const [activeFilters, setActiveFilters] = useState({
+    artists: selectedArtists,
+    genres: selectedGenres,
+  });
 
-  useEffect(() => {
-    if (playlist.length > 0) {
-      const uniqueArtists = [...new Set(playlist.map(track => track.author))];
-      const uniqueGenres = [...new Set(playlist.flatMap(track => track.genre))];
-      const uniqueYears = [...new Set(playlist.map(track => new Date(track.release_date).getFullYear().toString()))];
-
-      setArtists(uniqueArtists);
-      setGenres(uniqueGenres);
-      setYears(uniqueYears);
-    }
-  }, [playlist]);
+  const filterOptions = useMemo(() => ({
+    artists: [...new Set(currentPlaylist.map(track => track.author))],
+    genres: [...new Set(currentPlaylist.flatMap(track => track.genre))],
+    years: ['По умолчанию', 'Сначала новые', 'Сначала старые']
+  }), [currentPlaylist]);
 
   const toggleFilter = (filter: string) => {
-    setActiveFilter(activeFilter === filter ? null : filter);
+    setActiveFilter(prevFilter => prevFilter === filter ? null : filter);
+  };
+
+  const handleFilterToggle = (filter: string, item: string) => {
+    let updatedArtists = [...activeFilters.artists];
+    let updatedGenres = [...activeFilters.genres];
+
+    switch (filter) {
+      case 'artist':
+        updatedArtists = selectedArtists.includes(item)
+          ? selectedArtists.filter(a => a !== item)
+          : [...selectedArtists, item];
+        dispatch(setSelectedArtists(updatedArtists));
+        setActiveFilters({ ...activeFilters, artists: updatedArtists });
+        break;
+      case 'genre':
+        updatedGenres = selectedGenres.includes(item)
+          ? selectedGenres.filter(g => g !== item)
+          : [...selectedGenres, item];
+        dispatch(setSelectedGenres(updatedGenres));
+        setActiveFilters({ ...activeFilters, genres: updatedGenres });
+        break;
+      case 'year': {
+        const sortOptionValue = item === 'Сначала новые' ? 'new' : item === 'Сначала старые' ? 'old' : 'default';
+        dispatch(setSortOption(sortOptionValue));
+        setActiveFilter(null);
+        break;
+      }
+    }
+  };
+
+  const isItemSelected = (filter: string, item: string) => {
+    switch (filter) {
+      case 'artist':
+        return selectedArtists.includes(item);
+      case 'genre':
+        return selectedGenres.includes(item);
+      case 'year':
+        return (
+          (item === 'По умолчанию' && sortOption === 'default') ||
+          (item === 'Сначала новые' && sortOption === 'new') ||
+          (item === 'Сначала старые' && sortOption === 'old')
+        );
+      default:
+        return false;
+    }
   };
 
   return (
     <div className={styles.filter}>
       <div className={styles.title}>Искать по:</div>
       <div className={styles.filterButtons}>
-        {['artist', 'year', 'genre'].map((filter) => (
+        {['artist', 'genre', 'year'].map((filter) => (
           <div key={filter} className={styles.filterItem}>
             <button
               className={`${styles.button} ${activeFilter === filter ? styles.active : ''}`}
               onClick={() => toggleFilter(filter)}
+              aria-label={`Фильтр по ${filter === 'artist' ? 'исполнителю' : filter === 'genre' ? 'жанру' : 'году выпуска'}`}
             >
-              {filter === 'artist' ? 'исполнителю' : filter === 'year' ? 'году выпуска' : 'жанру'}
+              {filter === 'artist' ? 'исполнителю' : filter === 'genre' ? 'жанру' : 'году выпуска'}
+              {(filter === 'artist' && selectedArtists.length > 0) && (
+                <div className={styles.badgeCount}>{selectedArtists.length}</div>
+              )}
+              {(filter === 'genre' && selectedGenres.length > 0) && (
+                <div className={styles.badgeCount}>{selectedGenres.length}</div>
+              )}
+              {(filter === 'year' && sortOption !== 'default') && (
+                <div className={styles.badgeCount}>1</div>
+              )}
             </button>
             {activeFilter === filter && (
               <div className={styles.dropdown}>
                 <div className={styles.dropdownContent}>
-                  {(filter === 'artist' ? artists : filter === 'year' ? years : genres).map((item, index) => (
-                    <div key={index} className={styles.dropdownItem}>
+                  {Array.from(new Set([
+                    ...(filterOptions[filter === 'artist' ? 'artists' : 'genres']),
+                    ...(activeFilters[filter === 'artist' ? 'artists' : 'genres'])
+                  ])).map((item, index) => (
+                    <div
+                      key={index}
+                      className={`${styles.dropdownItem} ${isItemSelected(filter, item) ? styles.selected : ''}`}
+                      onClick={() => handleFilterToggle(filter, item)}
+                    >
+                      {item}
+                    </div>
+                  ))}
+                  {/* Display years without combination since they don't need to show inactive options */}
+                  {filter === 'year' && filterOptions.years.map((item, index) => (
+                    <div
+                      key={index}
+                      className={`${styles.dropdownItem} ${isItemSelected(filter, item) ? styles.selected : ''}`}
+                      onClick={() => handleFilterToggle(filter, item)}
+                    >
                       {item}
                     </div>
                   ))}

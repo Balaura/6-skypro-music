@@ -6,7 +6,6 @@ import { RootState } from '@/store/store';
 import {
   setIsPlaying,
   setCurrentTrack,
-  setPlaylist,
   setCurrentPlaylist,
   setIsShuffling,
   setIsLooping,
@@ -32,26 +31,7 @@ export const useAudioPlayer = () => {
   const [duration, setDuration] = useState(0);
   const audio = audioPlayer.getAudioElement();
 
-  useEffect(() => {
-    if (!audio) return;
 
-    const handleLoadedMetadata = () => setDuration(audio.duration);
-    const handleTimeUpdate = () => dispatch(setCurrentTime(audio.currentTime));
-    const handleEnded = () => {
-      // dispatch(setIsPlaying(false));
-      handleTrackEnd();
-    };
-
-    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
-    audio.addEventListener('timeupdate', handleTimeUpdate);
-    audio.addEventListener('ended', playNextTrack);
-
-    return () => {
-      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      audio.removeEventListener('timeupdate', handleTimeUpdate);
-      audio.removeEventListener('ended', playNextTrack);
-    };
-  }, [dispatch, audio, currentTrack]);
 
   const togglePlayPause = useCallback(() => {
     if (!audio) return;
@@ -98,13 +78,13 @@ export const useAudioPlayer = () => {
     if (!audio) return;
     audio.volume = newVolume;
     dispatch(setVolume(newVolume));
-  }, [dispatch]);
+  }, [dispatch, audio]);
 
   const setNewCurrentTime = useCallback((newTime: number) => {
     if (!audio) return;
     audio.currentTime = newTime;
     dispatch(setCurrentTime(newTime));
-  }, [dispatch]);
+  }, [dispatch, audio]);
 
   const toggleShuffle = useCallback(() => {
     dispatch(setIsShuffling(!isShuffling));
@@ -114,13 +94,13 @@ export const useAudioPlayer = () => {
     if (!audio) return;
     audio.loop = !isLooping;
     dispatch(setIsLooping(!isLooping));
-  }, [isLooping, dispatch]);
+  }, [isLooping, dispatch, audio]);
 
   const playNextTrack = useCallback(() => {
     if (currentPlaylist.length === 0 || !currentTrack) return;
 
     const currentIndex = currentPlaylist.findIndex(track => track._id === currentTrack?._id);
-    let nextIndex = isShuffling
+    const nextIndex = isShuffling
       ? Math.floor(Math.random() * currentPlaylist.length)
       : currentIndex + 1;
 
@@ -128,50 +108,59 @@ export const useAudioPlayer = () => {
       audio?.pause();
       dispatch(setIsPlaying(false));
       return;
-    };
+    }
 
     const nextTrack = currentPlaylist[nextIndex];
     if (currentTrack?._id !== nextTrack._id) {
       dispatch(setCurrentTrack(nextTrack));
       handlePlay(nextTrack, currentPlaylist);
     }
-  }, [currentPlaylist, currentTrack, isShuffling, handlePlay]);
+  }, [currentPlaylist, currentTrack, isShuffling, handlePlay, dispatch, audio]);
 
-  const handleTrackEnd = useCallback(() => {
-    setTimeout(() => {
-      playNextTrack();
-    }, 100);
-  }, [playNextTrack]);
+  useEffect(() => {
+    if (!audio) return;
 
+    const handleLoadedMetadata = () => setDuration(audio.duration);
+    const handleTimeUpdate = () => dispatch(setCurrentTime(audio.currentTime));
+
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener('ended', playNextTrack);
+
+    return () => {
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener('ended', playNextTrack);
+    };
+  }, [dispatch, audio, currentTrack, playNextTrack]);
 
   const playPreviousTrack = useCallback(() => {
     if (currentPlaylist.length === 0 || !currentTrack) return;
 
     const currentIndex = currentPlaylist.findIndex(track => track._id === currentTrack._id);
-    let previousIndex = isShuffling
+    const previousIndex = isShuffling
       ? Math.floor(Math.random() * currentPlaylist.length)
       : currentIndex - 1;
     if (previousIndex < 0) {
       audio?.pause();
       dispatch(setIsPlaying(false));
       return;
-    };
+    }
     const previousTrack = currentPlaylist[previousIndex];
     handlePlay(previousTrack, currentPlaylist);
-  }, [currentPlaylist, currentTrack, isShuffling, handlePlay]);
+  }, [currentPlaylist, currentTrack, isShuffling, handlePlay, dispatch, audio]);
 
   useEffect(() => {
     if (!audio) return;
     audio.volume = volume;
-  }, [volume]);
+  }, [volume, audio]);
 
-  // Sync audio.currentTime with Redux state
   useEffect(() => {
     if (!audio) return;
     if (Math.abs(audio.currentTime - currentTime) > 0.5) {
       audio.currentTime = currentTime;
     }
-  }, [currentTime]);
+  }, [currentTime, audio]);
 
   return {
     isPlaying,

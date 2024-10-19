@@ -1,11 +1,12 @@
 import React from 'react';
 import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { createTestStore } from '../../utils/testUtils';
-import Track from './Track';
+import { createTestStore, RootState } from '../../utils/testUtils';
+import Track from '@/components/Track/Track';
 import { Track as TrackType } from '@/hooks/useFetchTracks';
+import '@testing-library/jest-dom';
+import { initialState as audioPlayerInitialState } from '@/store/features/audioPlayerSlice';
 
-// Мок для api
 jest.mock('../../api/api', () => ({
   ...jest.requireActual('../../api/api'),
   fetchWithAuth: jest.fn().mockImplementation(() => Promise.resolve({ ok: true, json: () => Promise.resolve({}) })),
@@ -25,20 +26,13 @@ const mockTrack: TrackType = {
   artist: 'Test Artist'
 };
 
-describe('Track component', () => {
+describe('Track component edge cases', () => {
   const createStore = (isPlaying = false, currentTrack: TrackType | null = null) => {
-    const initialState = {
+    const initialState: Partial<RootState> = {
       audioPlayer: {
+        ...audioPlayerInitialState,
         isPlaying,
         currentTrack,
-        playlist: [],
-        isShuffling: false,
-        isLooping: false,
-        volume: 0.5,
-        currentTime: 0,
-        duration: 0,
-        favoriteTracks: [],
-        isLoading: false,
       },
       auth: {
         username: 'testUser',
@@ -60,7 +54,6 @@ describe('Track component', () => {
         </Provider>
       );
     });
-
     expect(screen.getByText('Test Track')).toBeInTheDocument();
     expect(screen.getByText('Test Author')).toBeInTheDocument();
     expect(screen.getByText('Test Album')).toBeInTheDocument();
@@ -129,9 +122,75 @@ describe('Track component', () => {
       fireEvent.click(likeButton);
     });
 
-    // Дожидаемся обновления состояния
     await waitFor(() => {
       expect(screen.queryByText('Войдите в аккаунт и попробуйте ещё раз')).not.toBeInTheDocument();
     });
+  });
+
+  it('handles very long track names', () => {
+    const longNameTrack = {
+      ...mockTrack,
+      name: 'This is a very long track name that might cause layout issues if not handled properly',
+    };
+
+    const store = createStore();
+    render(
+      <Provider store={store}>
+        <Track {...longNameTrack} isPlaying={false} isCurrentTrack={false} onPlay={() => {}} />
+      </Provider>
+    );
+
+    const trackName = screen.getByText(longNameTrack.name);
+    expect(trackName).toBeInTheDocument();
+  });
+
+  it('handles missing track data', () => {
+    const incompleteTrack: TrackType = {
+      ...mockTrack,
+      author: 'Неизвестный исполнитель',
+      album: 'Неизвестный альбом',
+    };
+
+    const store = createStore();
+    render(
+      <Provider store={store}>
+        <Track {...incompleteTrack} isPlaying={false} isCurrentTrack={false} onPlay={() => {}} />
+      </Provider>
+    );
+
+    expect(screen.getByText('Неизвестный исполнитель')).toBeInTheDocument();
+    expect(screen.getByText('Неизвестный альбом')).toBeInTheDocument();
+  });
+
+  it('handles zero duration', () => {
+    const zeroDurationTrack = {
+      ...mockTrack,
+      duration_in_seconds: 0,
+    };
+
+    const store = createStore();
+    render(
+      <Provider store={store}>
+        <Track {...zeroDurationTrack} isPlaying={false} isCurrentTrack={false} onPlay={() => {}} />
+      </Provider>
+    );
+
+    expect(screen.getByText('0:00')).toBeInTheDocument();
+  });
+
+  it('handles very large duration', () => {
+    const largeDurationTrack = {
+      ...mockTrack,
+      duration_in_seconds: 36000, // 10 hours
+    };
+  
+    const store = createStore();
+    render(
+      <Provider store={store}>
+        <Track {...largeDurationTrack} isPlaying={false} isCurrentTrack={false} onPlay={() => {}} />
+      </Provider>
+    );
+  
+    expect(screen.getByText('600:00')).toBeInTheDocument();
   });
 });

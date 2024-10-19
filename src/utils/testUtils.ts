@@ -1,9 +1,6 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import audioPlayerReducer from '../store/features/audioPlayerSlice';
-import authReducer from '../store/features/authSlice';
-import { AudioPlayerState } from '../store/features/audioPlayerSlice';
-import { AuthState } from '../store/features/authSlice';
-
+import audioPlayerReducer, { AudioPlayerState, initialState as audioPlayerInitialState } from '../store/features/audioPlayerSlice';
+import authReducer, { AuthState } from '../store/features/authSlice';
 // Определяем тип для корневого состояния
 export type RootState = {
   audioPlayer: AudioPlayerState;
@@ -17,12 +14,18 @@ const rootReducer = combineReducers({
 });
 
 // Функция для создания тестового store
-export const createTestStore = (preloadedState = {}) => {
+export const createTestStore = (preloadedState: Partial<RootState> = {}) => {
   return configureStore({
-    reducer: {
-      audioPlayer: audioPlayerReducer,
-      auth: authReducer,
-    },
-    preloadedState
+    reducer: rootReducer,
+    preloadedState: {
+      audioPlayer: {
+        ...audioPlayerInitialState,
+        ...preloadedState.audioPlayer
+      },
+      auth: {
+        ...preloadedState.auth
+      }
+    } as RootState
   });
 };
+

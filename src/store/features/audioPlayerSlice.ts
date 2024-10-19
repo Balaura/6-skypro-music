@@ -13,6 +13,11 @@ export interface AudioPlayerState {
   duration: number;
   favoriteTracks: number[];
   isLoading: boolean;
+  searchKeyword: string;
+  selectedArtists: string[];
+  selectedGenres: string[];
+  selectedYear: string | null;
+  sortOption: 'default' | 'new' | 'old';
 }
 
 export const initialState: AudioPlayerState = {
@@ -27,12 +32,18 @@ export const initialState: AudioPlayerState = {
   duration: 0,
   favoriteTracks: [],
   isLoading: true,
+  searchKeyword: '',
+  selectedArtists: [],
+  selectedGenres: [],
+  selectedYear: null,
+  sortOption: 'default',
 };
 
 const audioPlayerSlice = createSlice({
   name: 'audioPlayer',
   initialState,
   reducers: {
+
     setIsPlaying: (state, action: PayloadAction<boolean>) => {
       state.isPlaying = action.payload;
     },
@@ -80,6 +91,22 @@ const audioPlayerSlice = createSlice({
     clearFavoriteTracks: (state) => {
       state.favoriteTracks = [];
     },
+
+    setSearchKeyword: (state, action: PayloadAction<string>) => {
+      state.searchKeyword = action.payload;
+    },
+    setSelectedArtists: (state, action: PayloadAction<string[]>) => {
+      state.selectedArtists = action.payload;
+    },
+    setSelectedGenres: (state, action: PayloadAction<string[]>) => {
+      state.selectedGenres = action.payload;
+    },
+    setSelectedYear: (state, action: PayloadAction<string | null>) => {
+      state.selectedYear = action.payload;
+    },
+    setSortOption: (state, action: PayloadAction<'default' | 'new' | 'old'>) => {
+      state.sortOption = action.payload;
+    },
   },
 });
 
@@ -99,6 +126,11 @@ export const {
   setFavoriteTracks,
   setIsLoading,
   clearFavoriteTracks,
+  setSearchKeyword,
+  setSelectedArtists,
+  setSelectedGenres,
+  setSelectedYear,
+  setSortOption,
 } = audioPlayerSlice.actions;
 
 export default audioPlayerSlice.reducer;

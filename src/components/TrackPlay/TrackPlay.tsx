@@ -18,12 +18,10 @@ const TrackPlay: React.FC<TrackPlayProps> = ({ currentTrack }) => {
   const username = useSelector((state: RootState) => state.auth.username);
   const isFavorite = favoriteTracks.includes(currentTrack._id);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const handleLike = async (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsLoading(true);
-    setError(null);
     try {
       if (isFavorite) {
         await removeTrackFromFavorites(_id);
@@ -34,7 +32,6 @@ const TrackPlay: React.FC<TrackPlayProps> = ({ currentTrack }) => {
       }
     } catch (error) {
       console.error('Ошибка при обновлении избранного:', error);
-      setError('Войдите в аккаунт и попробуйте ещё раз');
     } finally {
       setIsLoading(false);
     }

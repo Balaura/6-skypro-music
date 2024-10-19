@@ -37,17 +37,39 @@ const SignUp = () => {
 			await dispatch(register({ email, password, username })).unwrap()
 			router.push('/signin')
 		} catch (err) {
-			if (err instanceof Error) {
-				let errorMsg = 'Попробуйте снова позже'
+			if (typeof err === 'object' && err !== null && 'message' in err && typeof (err as any).message === 'string') {
+				let errorMsg = '';
 				try {
-					const parsedError = JSON.parse(err.message.split(': ')[1])
+					// Убедимся, что мы имеем дело с корректной частью JSON
+					const jsonStartIndex = (err as { message: string }).message.indexOf('{');
+					const parsedError = JSON.parse((err as { message: string }).message.substring(jsonStartIndex));
+
 					if (parsedError && typeof parsedError === 'object') {
-						errorMsg = Object.values(parsedError).flat().join(' ')
+						if (parsedError.data && parsedError.data.errors) {
+							const errors = parsedError.data.errors;
+							if (errors.email && errors.email.length > 0) {
+								errorMsg = errors.email[0];
+							}
+							if (errors.password && errors.password.length > 0) {
+								errorMsg += errorMsg ? ' ' : '';
+								errorMsg += errors.password[0];
+							}
+							if (errors.username && errors.username.length > 0) {
+								errorMsg += errorMsg ? ' ' : '';
+								errorMsg += errors.username[0];
+							}
+						}
+
+						if (!errorMsg) {
+							errorMsg = parsedError.message || 'Неизвестная ошибка';
+						}
 					}
-				} catch (parseError) {}
-				setError('Ошибка регистрации: ' + errorMsg)
+				} catch (parseError) {
+					console.error('Ошибка при парсинге ответа:', parseError);
+				}
+				setError(errorMsg);
 			} else {
-				setError('Ошибка регистрации: Попробуйте снова позже')
+				setError('Произошла неизвестная ошибка. Пожалуйста, попробуйте снова.');
 			}
 		} finally {
 			setIsSubmitting(false)

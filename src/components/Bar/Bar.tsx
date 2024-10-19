@@ -18,9 +18,6 @@ const Bar: React.FC = () => {
   if (!currentTrack) {
     return null; // Скрываем Bar, если нет текущего трека
   }
-
-  {currentTrack && <TrackPlay currentTrack={currentTrack} />}  // для теста
-  
     return (
       <div className={styles.bar}>
         <div className={styles.content}>
