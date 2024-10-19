@@ -168,7 +168,7 @@ export const registerUser = async (
     const data = await response.json()
     return { ...data, username }
   } catch (error) {
-    console.error('Ошибка при регистрации пользователя:', error)
+    // console.error('Ошибка при регистрации пользователя:', error)
     throw error
   }
 }

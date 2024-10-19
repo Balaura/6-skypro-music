@@ -19,6 +19,11 @@ const Filter: React.FC = () => {
 
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
+  const [activeFilters, setActiveFilters] = useState({
+    artists: selectedArtists,
+    genres: selectedGenres,
+  });
+
   const filterOptions = useMemo(() => ({
     artists: [...new Set(currentPlaylist.map(track => track.author))],
     genres: [...new Set(currentPlaylist.flatMap(track => track.genre))],
@@ -30,20 +35,23 @@ const Filter: React.FC = () => {
   };
 
   const handleFilterToggle = (filter: string, item: string) => {
+    let updatedArtists = [...activeFilters.artists];
+    let updatedGenres = [...activeFilters.genres];
+
     switch (filter) {
       case 'artist':
-        dispatch(setSelectedArtists(
-          selectedArtists.includes(item)
-            ? selectedArtists.filter(a => a !== item)
-            : [...selectedArtists, item]
-        ));
+        updatedArtists = selectedArtists.includes(item)
+          ? selectedArtists.filter(a => a !== item)
+          : [...selectedArtists, item];
+        dispatch(setSelectedArtists(updatedArtists));
+        setActiveFilters({ ...activeFilters, artists: updatedArtists });
         break;
       case 'genre':
-        dispatch(setSelectedGenres(
-          selectedGenres.includes(item)
-            ? selectedGenres.filter(g => g !== item)
-            : [...selectedGenres, item]
-        ));
+        updatedGenres = selectedGenres.includes(item)
+          ? selectedGenres.filter(g => g !== item)
+          : [...selectedGenres, item];
+        dispatch(setSelectedGenres(updatedGenres));
+        setActiveFilters({ ...activeFilters, genres: updatedGenres });
         break;
       case 'year': {
         const sortOptionValue = item === 'Сначала новые' ? 'new' : item === 'Сначала старые' ? 'old' : 'default';
@@ -96,7 +104,20 @@ const Filter: React.FC = () => {
             {activeFilter === filter && (
               <div className={styles.dropdown}>
                 <div className={styles.dropdownContent}>
-                  {filterOptions[filter === 'artist' ? 'artists' : filter === 'genre' ? 'genres' : 'years'].map((item, index) => (
+                  {Array.from(new Set([
+                    ...(filterOptions[filter === 'artist' ? 'artists' : 'genres']),
+                    ...(activeFilters[filter === 'artist' ? 'artists' : 'genres'])
+                  ])).map((item, index) => (
+                    <div
+                      key={index}
+                      className={`${styles.dropdownItem} ${isItemSelected(filter, item) ? styles.selected : ''}`}
+                      onClick={() => handleFilterToggle(filter, item)}
+                    >
+                      {item}
+                    </div>
+                  ))}
+                  {/* Display years without combination since they don't need to show inactive options */}
+                  {filter === 'year' && filterOptions.years.map((item, index) => (
                     <div
                       key={index}
                       className={`${styles.dropdownItem} ${isItemSelected(filter, item) ? styles.selected : ''}`}
